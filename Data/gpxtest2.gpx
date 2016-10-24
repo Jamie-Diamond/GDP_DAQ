@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx xsi:schemaLocation="http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd" xmlns="http://www.topografix.com/GPX/1/0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0" creator="gpx.py -- https://github.com/tkrajina/gpxpy">
+<trk>
+<trkseg>
+<trkpt lat="50.93138258037287" lon="-1.3928884362360523">
+<time>2016-10-24T08:52:50Z</time></trkpt>
+<trkpt lat="50.931405902402695" lon="-1.3928969099727235">
+<time>2016-10-24T08:52:51Z</time></trkpt>
+<trkpt lat="50.93143185286702" lon="-1.3929525193672518">
+<time>2016-10-24T08:52:52Z</time></trkpt>
+<trkpt lat="50.93145251582655" lon="-1.392998496150001">
+<time>2016-10-24T08:52:53Z</time></trkpt>
+<trkpt lat="50.93147654102037" lon="-1.3930388363257038">
+<time>2016-10-24T08:52:54Z</time></trkpt>
+<trkpt lat="50.93151607908425" lon="-1.3930602134141914">
+<time>2016-10-24T08:52:55Z</time></trkpt>
+<trkpt lat="50.93154828037942" lon="-1.3931299177028178">
+<time>2016-10-24T08:52:56Z</time></trkpt>
+<trkpt lat="50.9316081601588" lon="-1.3932716453733704">
+<time>2016-10-24T08:52:57Z</time></trkpt>
+<trkpt lat="50.93163839621422" lon="-1.3933629278641688">
+<time>2016-10-24T08:52:58Z</time></trkpt>
+<trkpt lat="50.93167073078886" lon="-1.3934540012228822">
+<time>2016-10-24T08:52:59Z</time></trkpt>
+<trkpt lat="50.93169888033034" lon="-1.3935371728333061">
+<time>2016-10-24T08:53:00Z</time></trkpt>
+<trkpt lat="50.931723871849535" lon="-1.393617161103713">
+<time>2016-10-24T08:53:01Z</time></trkpt>
+<trkpt lat="50.931747759668376" lon="-1.3936915701568489">
+<time>2016-10-24T08:53:02Z</time></trkpt>
+<trkpt lat="50.93177175983631" lon="-1.393762651119247">
+<time>2016-10-24T08:53:03Z</time></trkpt>
+<trkpt lat="50.93179706949671" lon="-1.3938326893574393">
+<time>2016-10-24T08:53:04Z</time></trkpt>
+<trkpt lat="50.93181872736829" lon="-1.393901684219895">
+<time>2016-10-24T08:53:05Z</time></trkpt>
+<trkpt lat="50.93183560538005" lon="-1.3939666574962157">
+<time>2016-10-24T08:53:06Z</time></trkpt>
+<trkpt lat="50.931854034645156" lon="-1.3940290956274362">
+<time>2016-10-24T08:53:07Z</time></trkpt>
+<trkpt lat="50.93187086500378" lon="-1.3940910640690505">
+<time>2016-10-24T08:53:08Z</time></trkpt>
+<trkpt lat="50.93188854320829" lon="-1.3941509262036682">
+<time>2016-10-24T08:53:09Z</time></trkpt>
+<trkpt lat="50.93190799579661" lon="-1.3942143978686588">
+<time>2016-10-24T08:53:10Z</time></trkpt>
+<trkpt lat="50.931929415695905" lon="-1.394282661553473">
+<time>2016-10-24T08:53:11Z</time></trkpt>
+<trkpt lat="50.931948793026066" lon="-1.394345149610425">
+<time>2016-10-24T08:53:12Z</time></trkpt>
+<trkpt lat="50.93196919110981" lon="-1.3944060439477086">
+<time>2016-10-24T08:53:13Z</time></trkpt>
+<trkpt lat="50.93198714894101" lon="-1.394466388383099">
+<time>2016-10-24T08:53:14Z</time></trkpt>
+<trkpt lat="50.93200389418583" lon="-1.3945294178113858">
+<time>2016-10-24T08:53:15Z</time></trkpt>
+<trkpt lat="50.9320194008848" lon="-1.3945850310083854">
+<time>2016-10-24T08:53:16Z</time></trkpt>
+<trkpt lat="50.93203586101183" lon="-1.3946364052556097">
+<time>2016-10-24T08:53:17Z</time></trkpt>
+<trkpt lat="50.932051829123246" lon="-1.394690665975856">
+<time>2016-10-24T08:53:18Z</time></trkpt>
+<trkpt lat="50.932064432688534" lon="-1.3947490218154897">
+<time>2016-10-24T08:53:19Z</time></trkpt>
+<trkpt lat="50.93208146057024" lon="-1.394804277561355">
+<time>2016-10-24T08:53:20Z</time></trkpt>
+<trkpt lat="50.932098796082556" lon="-1.394862738546967">
+<time>2016-10-24T08:53:21Z</time></trkpt>
+<trkpt lat="50.93211610108097" lon="-1.3949209893943604">
+<time>2016-10-24T08:53:22Z</time></trkpt></trkseg></trk></gpx>

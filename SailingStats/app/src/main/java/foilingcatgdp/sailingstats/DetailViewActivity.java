@@ -126,17 +126,6 @@ public class DetailViewActivity extends AppCompatActivity {
                     String dateString = dateFormat.format(curDate);
                     String timeString = timeFormat.format(curDate);
 
-                    SimpleDateFormat GPSdateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.UK);
-                    SimpleDateFormat GPStimeFormat = new SimpleDateFormat("hh:mm:ss.SSS", Locale.UK);
-                    String GPSdateString = GPSdateFormat.format(curDate);
-                    String GPStimeString = GPStimeFormat.format(curDate);
-
-                    String GPSTimeDateString = GPSdateString + "T" + GPStimeString + "Z";
-
-//                    DataLogElement data = new DataLogElement(dateString, timeString, newLatVal, newLongVal, ds, speed, heading);
-//
-//                    dbHandler.addElementToDB(data);
-
                     if (n > 9) {
 
                         FileWriter output = null;
@@ -146,11 +135,6 @@ public class DetailViewActivity extends AppCompatActivity {
                             output = new FileWriter(outputFile, true);
                             output.write("\r\n" + dateString + "," + timeString + "," + newLatVal + "," + newLongVal + "," + ds + "," + dt + "," + speed + "," + heading);
 
-                            File outputFile2 = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "SailingStats" + File.separator + startDateTime + " Data.gpx");
-                            FileWriter output2 = new FileWriter(outputFile2, true);
-                            output2.write("\r\n<trkpt lat=\"" + newLatVal + "\" lon=\"" + newLongVal + "\">" +
-                                    "\r\n<time>" + GPSTimeDateString + "</time>" +
-                                    "\r\n</trkpt>");
 
 
                             System.out.println("Logged to:" + outputFile.getPath());
@@ -236,30 +220,14 @@ public class DetailViewActivity extends AppCompatActivity {
                 File output2 = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "SailingStats" + File.separator + startDateTime + " Data.gpx");
                 try {
                     output.createNewFile();
-                    output2.createNewFile();
 
                     Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                     intent.setData(Uri.fromFile(output));
                     sendBroadcast(intent);
 
-                    Intent intent2 = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                    intent.setData(Uri.fromFile(output2));
-                    sendBroadcast(intent2);
-
                     FileWriter outputFW = new FileWriter(output, true);
                     outputFW.write("Date,Time,Latitude,Longitude,Distance Change(m),Time Change (s),Speed (knots),Heading (deg)");
 
-                    FileWriter outputFW2 = new FileWriter(output2, true);
-                    outputFW2.write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>" +
-                            "\r\n<gpx>" +
-                            "\r\n<metadata>" +
-                            "\r\n<text>GDP 23 - Foiling Catamaran, GPS Data Output</text>" +
-                            "\r\n<time>" + startDateTime + "</time>" +
-                            "\r\n</metadata>" +
-                            "\r\n<trk>" +
-                            "\r\n<name>" + startDateTime + " GPS Data</name>" +
-                            "\r\n<trkseg>"
-                    );
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -281,51 +249,6 @@ public class DetailViewActivity extends AppCompatActivity {
                 distValTxt.setText("");
                 speedValTxt.setText("");
                 statusTxt.setText("");
-
-                try {
-                    File outputFile2 = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "SailingStats" + File.separator + startDateTime + " Data.gpx");
-                    FileWriter output2 = new FileWriter(outputFile2, true);
-                    output2.write("\r\n</trkseg>" +
-                            "\r\n<trk>" +
-                            "\r\n</gpx>");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-//                Date curDate = new Date();
-//                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.UK);
-//                String dateString = dateFormat.format(curDate);
-//
-//                String OUTPUT_NAME = dateString + " database.db";
-//
-//                File outputDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "SailingStats");
-//
-//                File outputFile = new File(outputDir, OUTPUT_NAME);
-//
-//                try {
-//                    if(outputFile.createNewFile()){System.out.println("Dummy file created...");};
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//
-//                File inputFile = getApplicationContext().getDatabasePath("DataLog.db");
-//
-//                try {
-//                    FileUtils.copyFile(new FileInputStream(outputFile), new FileOutputStream(inputFile));
-//                    System.out.println("Copied to: "+ outputFile.toString() +"...");
-//                    System.out.println(outputFile.exists());
-//                    Toast.makeText(getApplicationContext(), //Context
-//                            "Copied to: "+ outputFile.toString() +"...", // Message to display
-//                            Toast.LENGTH_SHORT // Duration of the message, another possible value is Toast.LENGTH_LONG
-//                    ).show();
-//
-//                    Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-//                    intent.setData(Uri.fromFile(outputFile));
-//                    sendBroadcast(intent);
-//
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
             }
         });
     }

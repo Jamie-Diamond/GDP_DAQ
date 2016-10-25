@@ -20,7 +20,9 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
+import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import  android.widget.TextView;
 import android.widget.Toast;
@@ -49,8 +51,12 @@ public class DetailViewActivity extends AppCompatActivity {
     TextView longValTxt;
     TextView distValTxt;
     TextView speedValTxt;
+    TextView statusTxt;
     LogDBHandler dbHandler;
     String startDateTime;
+    double milliTimeOld;
+    double milliTimeNew;
+    int n;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +67,10 @@ public class DetailViewActivity extends AppCompatActivity {
         longValTxt = (TextView) findViewById(R.id.longValTxt);
         distValTxt = (TextView) findViewById(R.id.distValTxt);
         speedValTxt = (TextView) findViewById(R.id.speedValTxt);
+        statusTxt = (TextView) findViewById(R.id.statusTxt);
         dbHandler = new LogDBHandler(this);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         //Check if permissions are needed and if ok enable the start/stop button.
         if(!runtime_permissions())
@@ -80,17 +89,22 @@ public class DetailViewActivity extends AppCompatActivity {
                     double newLongVal = (double) intent.getExtras().get("long");
                     double newLatVal = (double) intent.getExtras().get("lat");
                     double ds = Double.NaN;
+                    double dt = Double.NaN;
                     double speed = Double.NaN;
                     double heading = Double.NaN;
+                    milliTimeNew = System.currentTimeMillis();
 
                     if(latValTxt.getText().toString() != "") { //Don't do first time round
                         //Get old values
                         double oldLongVal = Double.parseDouble(longValTxt.getText().toString());
                         double oldLatVal = Double.parseDouble(latValTxt.getText().toString());
 
+                        //Calculate time step
+                        dt = Math.abs(milliTimeNew - milliTimeOld)/1000;
+
                         //Calculate distance change
                         ds = distMovedCalc(oldLatVal, oldLongVal, newLatVal, newLongVal);
-                        speed = (ds / 0.5) / 0.5144;
+                        speed = (ds / dt) / 0.5144;
 
                         //Update Screen Text
                         distValTxt.setText(String.format("%.3f", ds));
@@ -101,6 +115,10 @@ public class DetailViewActivity extends AppCompatActivity {
                     longValTxt.setText(String.format("%.5f", newLongVal));
                     latValTxt.setText(String.format("%.5f", newLatVal));
 
+                    //Update Read Time
+
+                    milliTimeOld = milliTimeNew;
+
                     //Create data log entry
                     Date curDate = new Date();
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.UK);
@@ -108,32 +126,53 @@ public class DetailViewActivity extends AppCompatActivity {
                     String dateString = dateFormat.format(curDate);
                     String timeString = timeFormat.format(curDate);
 
-                    DataLogElement data = new DataLogElement(dateString, timeString, newLatVal, newLongVal, ds, speed, heading);
+                    SimpleDateFormat GPSdateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.UK);
+                    SimpleDateFormat GPStimeFormat = new SimpleDateFormat("hh:mm:ss.SSS", Locale.UK);
+                    String GPSdateString = GPSdateFormat.format(curDate);
+                    String GPStimeString = GPStimeFormat.format(curDate);
 
-                    dbHandler.addElementToDB(data);
+                    String GPSTimeDateString = GPSdateString + "T" + GPStimeString + "Z";
 
-                    FileWriter output = null;
+//                    DataLogElement data = new DataLogElement(dateString, timeString, newLatVal, newLongVal, ds, speed, heading);
+//
+//                    dbHandler.addElementToDB(data);
 
-                    try {
-                        File outputFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "SailingStats" + File.separator + startDateTime + " Data.csv");
-                        output = new FileWriter(outputFile, true);
-                        System.out.println("Logged to:" + outputFile.getPath());
-                        System.out.println("Data File Size:" + outputFile.length());
-                        output.write("\r\n" + dateString + "," + timeString + "," + newLatVal + "," + newLongVal + "," + ds + "," + speed + "," + heading);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } finally {
+                    if (n > 9) {
+
+                        FileWriter output = null;
+
                         try {
-                            if(output != null){
-                                output.close();
-                            }
+                            File outputFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "SailingStats" + File.separator + startDateTime + " Data.csv");
+                            output = new FileWriter(outputFile, true);
+                            output.write("\r\n" + dateString + "," + timeString + "," + newLatVal + "," + newLongVal + "," + ds + "," + dt + "," + speed + "," + heading);
+
+                            File outputFile2 = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "SailingStats" + File.separator + startDateTime + " Data.gpx");
+                            FileWriter output2 = new FileWriter(outputFile2, true);
+                            output2.write("\r\n<trkpt lat=\"" + newLatVal + "\" lon=\"" + newLongVal + "\">" +
+                                    "\r\n<time>" + GPSTimeDateString + "</time>" +
+                                    "\r\n</trkpt>");
+
+
+                            System.out.println("Logged to:" + outputFile.getPath());
+                            System.out.println("CSV Data File Size:" + outputFile.length());
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
                         } catch (IOException e) {
                             e.printStackTrace();
+                        } finally {
+                            try {
+                                if (output != null) {
+                                    output.close();
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
+                        statusTxt.setGravity(Gravity.LEFT);
+                        statusTxt.setText("Recording data... \t\t" + (n-9));
                     }
 
+                    n++;
 
                 }
             };
@@ -194,18 +233,40 @@ public class DetailViewActivity extends AppCompatActivity {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.UK);
                 startDateTime = dateFormat.format(curDate);
                 File output = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "SailingStats" + File.separator + startDateTime + " Data.csv");
+                File output2 = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "SailingStats" + File.separator + startDateTime + " Data.gpx");
                 try {
                     output.createNewFile();
+                    output2.createNewFile();
 
                     Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                     intent.setData(Uri.fromFile(output));
                     sendBroadcast(intent);
 
+                    Intent intent2 = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                    intent.setData(Uri.fromFile(output2));
+                    sendBroadcast(intent2);
+
+                    FileWriter outputFW = new FileWriter(output, true);
+                    outputFW.write("Date,Time,Latitude,Longitude,Distance Change(m),Time Change (s),Speed (knots),Heading (deg)");
+
+                    FileWriter outputFW2 = new FileWriter(output2, true);
+                    outputFW2.write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>" +
+                            "\r\n<gpx>" +
+                            "\r\n<metadata>" +
+                            "\r\n<text>GDP 23 - Foiling Catamaran, GPS Data Output</text>" +
+                            "\r\n<time>" + startDateTime + "</time>" +
+                            "\r\n</metadata>" +
+                            "\r\n<trk>" +
+                            "\r\n<name>" + startDateTime + " GPS Data</name>" +
+                            "\r\n<trkseg>"
+                    );
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
-
+                statusTxt.setText("Waiting for GPS...");
+                n = 0;
             }
         });
 
@@ -219,6 +280,17 @@ public class DetailViewActivity extends AppCompatActivity {
                 latValTxt.setText("");
                 distValTxt.setText("");
                 speedValTxt.setText("");
+                statusTxt.setText("");
+
+                try {
+                    File outputFile2 = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "SailingStats" + File.separator + startDateTime + " Data.gpx");
+                    FileWriter output2 = new FileWriter(outputFile2, true);
+                    output2.write("\r\n</trkseg>" +
+                            "\r\n<trk>" +
+                            "\r\n</gpx>");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
 //                Date curDate = new Date();
 //                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.UK);

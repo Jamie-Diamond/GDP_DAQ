@@ -11,7 +11,7 @@
     <GridLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:rowCount="5"
+        android:rowCount="6"
         android:columnCount="3"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true">
@@ -24,7 +24,6 @@
             android:layout_gravity="bottom|center"
             android:layout_width="150dp"
             android:textAlignment="center"
-            android:keepScreenOn="true"
             style="@style/Title"/>
 
         <TextView
@@ -111,6 +110,18 @@
             android:layout_column="1"
             android:layout_gravity="center"
             style="@style/BtnDown" />
+
+        <TextView
+            android:text=""
+            android:layout_height="wrap_content"
+            android:id="@+id/statusTxt"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="bottom|center"
+            android:layout_width="wrap_content"
+            android:layout_row="4"
+            android:layout_column="0"
+            android:layout_columnSpan="2"
+            style="@style/Title"/>
 
         <TextView
             android:text="Speed (knots):"

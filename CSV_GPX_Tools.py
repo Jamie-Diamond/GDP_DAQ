@@ -4,7 +4,8 @@ import gpxpy.gpx
 from datetime import datetime
 import utm
 import matplotlib.pyplot as plt
-
+#from pykalman import KalmanFilter
+import numpy
 
 def csv_2_gpx(input, output):
     gpx = gpxpy.gpx.GPX()
@@ -31,9 +32,12 @@ def csv_2_gpx(input, output):
 
     file.close()
 
+def movingaverage(interval, window_size):
+    window= numpy.ones(int(window_size))/float(window_size)
+    return numpy.convolve(interval, window, 'same')
 
 
-def gpx_spd_plot(name):
+def gpx_spd(name):
     with open(name) as gpx_one:
         gpx_one = gpxpy.parse(gpx_one)
         a=0
@@ -52,6 +56,7 @@ def gpx_spd_plot(name):
     speeds = []
     i = 0
     duration = [0]
+    timediff_lst = []
     for i in (range(len(lats)-1)):
         [lat, long, _, _] = utm.from_latlon(lats[i], longs[i])
         [lat1, long1, _, _] = utm.from_latlon(lats[i+1], longs[i+1])
@@ -60,6 +65,7 @@ def gpx_spd_plot(name):
         time0 = times[i]
         time1 = times[i+1]
         timediff = time1 - time0
+        timediff_lst.append(timediff)
         duration.append(timediff.total_seconds() + duration[-1])
         dist = latdiff**2 + longdiff**2
         dist **= 0.5
@@ -68,11 +74,30 @@ def gpx_spd_plot(name):
         speeds.append(speed)
 
     del duration[0]
+    print(numpy.mean(timediff_lst))
 
     print(len(speeds))
     print(len(duration))
+    if 'garmin' in name:
+        x = 1
+    else:
+        x = 6
+    speeds_ave = movingaverage(speeds, x)
 
-    plt.plot(duration, speeds)
-    plt.axis([0, max(duration), 0, 10])
-    plt.show()
+    return speeds_ave, duration
+
+
+[gs, gd] = gpx_spd('cycle_in_garmin.gpx')
+[ps, pd] = gpx_spd('cycle_in.gpx')
+
+pd[:] = [x - 5 for x in pd]
+line_up, = plt.plot(gd,gs, 'rx-', label='Garmin')
+line_down, = plt.plot(pd, ps, 'bx-', label='Android App')
+plt.legend(handles=[line_up, line_down])
+plt.ylim(0, 14)
+plt.xlim(0, 350)
+plt.xlabel("Duration [s]")
+plt.ylabel("Speed [m/s]")
+plt.grid(True)
+plt.show()
 

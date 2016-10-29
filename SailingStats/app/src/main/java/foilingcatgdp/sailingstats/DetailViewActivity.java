@@ -52,6 +52,7 @@ public class DetailViewActivity extends AppCompatActivity {
     TextView distValTxt;
     TextView speedValTxt;
     TextView statusTxt;
+    TextView topRightTxt;
     LogDBHandler dbHandler;
     String startDateTime;
     double milliTimeOld;
@@ -68,6 +69,7 @@ public class DetailViewActivity extends AppCompatActivity {
         distValTxt = (TextView) findViewById(R.id.distValTxt);
         speedValTxt = (TextView) findViewById(R.id.speedValTxt);
         statusTxt = (TextView) findViewById(R.id.statusTxt);
+        topRightTxt = (TextView) findViewById(R.id.topRightTxt);
         dbHandler = new LogDBHandler(this);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -153,7 +155,8 @@ public class DetailViewActivity extends AppCompatActivity {
                             }
                         }
                         statusTxt.setGravity(Gravity.LEFT);
-                        statusTxt.setText("Recording data... \t\t" + (n-9));
+                        statusTxt.setText("Recording data...");
+                        topRightTxt.setText((n - 9) + " Data Points");
                     }
 
                     n++;

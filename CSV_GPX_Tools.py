@@ -51,7 +51,9 @@ def gpx_spd(name):
                     lats.append(point.latitude)
                     longs.append(point.longitude)
                     times.append(point.time)
-
+    plt.figure(1)
+    plt.plot(longs,lats)
+    plt.show
     distances = []
     speeds = []
     i = 0
@@ -86,18 +88,19 @@ def gpx_spd(name):
 
     return speeds_ave, duration
 
+if __name__ == "__main__":
+    [gs, gd] = gpx_spd('cycle_in_garmin.gpx')
+    [ps, pd] = gpx_spd('cycle_in.gpx')
 
-[gs, gd] = gpx_spd('cycle_in_garmin.gpx')
-[ps, pd] = gpx_spd('cycle_in.gpx')
-
-pd[:] = [x - 5 for x in pd]
-line_up, = plt.plot(gd,gs, 'rx-', label='Garmin')
-line_down, = plt.plot(pd, ps, 'bx-', label='Android App')
-plt.legend(handles=[line_up, line_down])
-plt.ylim(0, 14)
-plt.xlim(0, 350)
-plt.xlabel("Duration [s]")
-plt.ylabel("Speed [m/s]")
-plt.grid(True)
-plt.show()
+    plt.figure(2)
+    pd[:] = [x - 5 for x in pd]
+    line_up, = plt.plot(gd,gs, 'rx-', label='Garmin')
+    line_down, = plt.plot(pd, ps, 'bx-', label='Android App')
+    plt.legend(handles=[line_up, line_down])
+    plt.ylim(0, 14)
+    plt.xlim(0, 350)
+    plt.xlabel("Duration [s]")
+    plt.ylabel("Speed [m/s]")
+    plt.grid(True)
+    plt.show()
 

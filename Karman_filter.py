@@ -17,33 +17,32 @@ class KalmanFilter(object):
     def get_latest_estimated_measurement(self):
         return self.posteri_estimate
 
-def lat_long_karman(lats, longs):
+def lat_long_karman(lats, longs, process_variance = 1e-7):
+    # The smaller the varience, the fewer fluctuations, but can also venture off
+    # course...
     import numpy
     import random
-    # Filter here #######################
     # in practice we would take our sensor, log some readings and get the
     # standard deviation
-    iteration_count = len(longs)
-    measurement_standard_deviation = numpy.std([random.random() * 0.0000001 for j in range(iteration_count)])
+    sample_len = len(longs)
+    measurement_standard_deviation_lats = numpy.std(lats)
+    measurement_standard_deviation_longs = numpy.std(longs)
 
-    # The smaller this number, the fewer fluctuations, but can also venture off
-    # course...
-    process_variance = 1e-5
-    estimated_measurement_variance = measurement_standard_deviation ** 2  # 0.05 ** 2
+    measurement_variance_lats = measurement_standard_deviation_lats ** 2  # 0.05 ** 2
+    measurement_variance_longs = measurement_standard_deviation_longs ** 2  # 0.05 ** 2
 
-    posteri_estimate_graph_lats = []
-    posteri_estimate_graph_longs = []
+    posteri_estimate_lats = []
+    posteri_estimate_longs = []
 
-    kalman_filter = KalmanFilter(process_variance, estimated_measurement_variance)
-    for iteration in range(1, iteration_count):
+    kalman_filter = KalmanFilter(process_variance, measurement_variance_lats)
+    for iteration in range(1, sample_len):
         kalman_filter.input_latest_noisy_measurement(lats[iteration])
-        posteri_estimate_graph_lats.append(kalman_filter.get_latest_estimated_measurement())
-    kalman_filter = KalmanFilter(process_variance, estimated_measurement_variance)
-    for iteration in range(1, iteration_count):
+        posteri_estimate_lats.append(kalman_filter.get_latest_estimated_measurement())
+    kalman_filter = KalmanFilter(process_variance, measurement_variance_longs)
+    for iteration in range(1, sample_len):
         kalman_filter.input_latest_noisy_measurement(longs[iteration])
-        posteri_estimate_graph_longs.append(kalman_filter.get_latest_estimated_measurement())
-    # #######################
-    return posteri_estimate_graph_lats, posteri_estimate_graph_longs
+        posteri_estimate_longs.append(kalman_filter.get_latest_estimated_measurement())
+    return posteri_estimate_lats, posteri_estimate_longs
 
 
 
@@ -52,7 +51,7 @@ if __name__ == "__main__":
     import matplotlib.pyplot as plt
     [lats, longs, times] = gpx_lat_long_duration('cycle_in.gpx')
     [latsK, longsK] = lat_long_karman(lats, longs)
-    plt.plot(longs, lats, 'bo', label='Raw')
-    plt.plot(longsK, latsK, 'rx', label='Karman Filtered')
+    plt.plot(longs, lats, 'bo-', label='Raw')
+    plt.plot(longsK, latsK, 'rx-', label='Karman Filtered')
     plt.legend()
     plt.show()

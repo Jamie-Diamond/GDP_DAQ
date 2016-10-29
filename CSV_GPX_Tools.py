@@ -52,8 +52,7 @@ def gpx_lat_long_duration(name):
             return lats, longs, times
 
 
-def gpx_spd(name):
-    [lats, longs, times] = gpx_lat_long_duration(name)
+def gpx_spd(lats, longs, times):
     distances = []
     speeds = []
     duration = [0]
@@ -75,27 +74,33 @@ def gpx_spd(name):
         speeds.append(speed)
 
     del duration[0]
-    print(numpy.mean(timediff_lst))
-
-    print(len(speeds))
-    print(len(duration))
-    if 'garmin' in name:
-        x = 1
-    else:
-        x = 6
-    speeds_ave = movingaverage(speeds, x)
-
-    return speeds_ave, duration
+    return speeds, duration
 
 if __name__ == "__main__":
-    [gs, gd] = gpx_spd('cycle_in_garmin.gpx')
-    [ps, pd] = gpx_spd('cycle_in.gpx')
+    from Karman_filter import lat_long_karman
+    [latsgar, longsgar, timesgar] = gpx_lat_long_duration('cycle_in_garmin.gpx')
+    [lats, longs, times] = gpx_lat_long_duration('cycle_in.gpx')
+    [latsK, longsK] = lat_long_karman(lats, longs)
+    plt.figure(1)
+    plt.plot(longsgar, latsgar, 'g*-', label='Garmin')
+    plt.plot(longs, lats, 'bo-', label='Phone Raw')
+    plt.plot(longsK, latsK, 'rx-', label='Phone Karman Filtered')
+    plt.legend()
+
+    [latsgar, longsgar, timesgar] = gpx_lat_long_duration('cycle_in_garmin.gpx')
+    [lats, longs, times] = gpx_lat_long_duration('cycle_in.gpx')
+    [latsK, longsK] = lat_long_karman(lats, longs)
+    [gs, gd] = gpx_spd(latsgar, longsgar, timesgar)
+    [ps, pd] = gpx_spd(lats, longs, times)
+    [psK, pdK] = gpx_spd(latsK, longsK, times)
 
     plt.figure(2)
-    pd[:] = [x - 5 for x in pd]
-    line_up, = plt.plot(gd,gs, 'rx-', label='Garmin')
-    line_down, = plt.plot(pd, ps, 'bx-', label='Android App')
-    plt.legend(handles=[line_up, line_down])
+    offset = 5
+    pd[:] = [x - offset for x in pd]
+    plt.plot(gd, gs, 'rx-', label='Garmin')
+    plt.plot(pd, ps, 'bx-', label='Android App')
+    plt.plot(pdK, psK, 'k*-', label='Android App Karman')
+    plt.legend()
     plt.ylim(0, 14)
     plt.xlim(0, 350)
     plt.xlabel("Duration [s]")

@@ -37,12 +37,10 @@ def movingaverage(interval, window_size):
     return numpy.convolve(interval, window, 'same')
 
 
-def gpx_spd(name):
+def gpx_lat_long_duration(name):
     with open(name) as gpx_one:
         gpx_one = gpxpy.parse(gpx_one)
-        a=0
         for track in gpx_one.tracks:
-            a+=1
             longs = []
             times = []
             lats = []
@@ -51,12 +49,13 @@ def gpx_spd(name):
                     lats.append(point.latitude)
                     longs.append(point.longitude)
                     times.append(point.time)
-    plt.figure(1)
-    plt.plot(longs,lats)
-    plt.show
+            return lats, longs, times
+
+
+def gpx_spd(name):
+    [lats, longs, times] = gpx_lat_long_duration(name)
     distances = []
     speeds = []
-    i = 0
     duration = [0]
     timediff_lst = []
     for i in (range(len(lats)-1)):

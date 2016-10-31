@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bbf61bd8-cf84-40ed-b7dc-f5f7b0b8020e" name="Default" comment="">
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Karman filter.py" afterPath="$PROJECT_DIR$/Karman_filter.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CSV_GPX_Tools.py" afterPath="$PROJECT_DIR$/CSV_GPX_Tools.py" />
-    </list>
+    <list default="true" id="bbf61bd8-cf84-40ed-b7dc-f5f7b0b8020e" name="Default" comment="" />
     <ignored path="GDP_DAQ.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -24,11 +20,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="CSV_GPX_Tools.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="CSV_GPX_Tools.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CSV_GPX_Tools.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="133">
-              <caret line="85" column="51" selection-start-line="85" selection-start-column="51" selection-end-line="85" selection-end-column="51" />
+              <caret line="82" column="50" selection-start-line="82" selection-start-column="50" selection-end-line="82" selection-end-column="50" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -36,7 +32,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Karman_filter.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Karman_filter.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Karman_filter.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="373">
@@ -82,8 +78,8 @@
         <option value="$PROJECT_DIR$/GPX_speed.py" />
         <option value="$PROJECT_DIR$/CSVtoGPX.py" />
         <option value="$PROJECT_DIR$/Karman filter.py" />
-        <option value="$PROJECT_DIR$/CSV_GPX_Tools.py" />
         <option value="$PROJECT_DIR$/Karman_filter.py" />
+        <option value="$PROJECT_DIR$/CSV_GPX_Tools.py" />
       </list>
     </option>
   </component>
@@ -380,7 +376,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1680" height="1024" extended-state="6" />
+    <frame x="0" y="22" width="1680" height="1024" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24954791" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -529,21 +525,21 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/CSV_GPX_Tools.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="82" column="50" selection-start-line="82" selection-start-column="50" selection-end-line="82" selection-end-column="50" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Karman_filter.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="373">
           <caret line="27" column="57" selection-start-line="27" selection-start-column="57" selection-end-line="27" selection-end-column="57" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CSV_GPX_Tools.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="85" column="51" selection-start-line="85" selection-start-column="51" selection-end-line="85" selection-end-column="51" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>

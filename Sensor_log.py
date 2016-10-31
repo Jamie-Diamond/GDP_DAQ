@@ -12,26 +12,46 @@ def sensor_log_lists(input):
         for a in reader:
             if 'Magnetic' in a[0]:
                 b = a[0].split("|")
-                Magnetic.append([int(b[3]), json.loads(b[2])])
+                Magnetic.append([float(b[3]), json.loads(b[2])])
             if 'Gyro' in a[0]:
                 b = a[0].split("|")
-                Gyro.append([int(b[3]), json.loads(b[2])])
+                Gyro.append([float(b[3]), json.loads(b[2])])
             if 'GPS' in a[0]:
                 b = a[0].split("|")
-                GPS.append([int(b[3]), json.loads(b[2])])
+                GPS.append([float(b[3]), json.loads(b[2])])
             if 'Acceleration' in a[0] and 'Linear' not in a[0]:
                 b = a[0].split("|")
                 Accel.append([int(b[3]), json.loads(b[2])])
             if 'Linear Acceleration' in a[0]:
                 b = a[0].split("|")
-                Lin_Accel.append([int(b[3]), json.loads(b[2])])
-        print('Magn Data points:', len(Magnetic))
-        print('Gyro Data points:', len(Gyro))
-        print('GPS Data points:', len(GPS))
-        print('Accel Data points:', len(Accel))
+                Lin_Accel.append([float(b[3]), json.loads(b[2])])
     GPS = GPS_Data_Tidy(GPS)
+    print('Magn Data points:', len(Magnetic))
+    freq_out(Magnetic)
+    print('Gyro Data points:', len(Gyro))
+    freq_out(Gyro)
+    print('GPS Data points:', len(GPS))
+    freq_out(GPS)
+    print('Lin_Accel Data points:', len(Lin_Accel))
+    freq_out(Lin_Accel)
     Magnetic = Mag_Data_Tidy(Magnetic)
     return Magnetic, Gyro, GPS, Accel, Lin_Accel
+
+
+def freq_out(data):
+    from statistics import mean
+    gap = []
+    if len(data) < 101:
+        print('Data to short')
+        return None
+    for i in range(100):
+        t0 = (data[i][0])/1000
+        t1 = (data[i+1][0])/1000
+        gap.append(t1-t0)
+    ave = mean(gap)
+    freq = 1/ave
+    print('Frequency: ', round(freq,1), 'Hz')
+    return None
 
 
 def GPS_Data_Tidy(GPS):
@@ -114,8 +134,8 @@ def GPS_plot(data):
 
 if __name__ == "__main__":
     [Mag, Gyro, GPS, Accel, Lin_Accel] = sensor_log_lists('sensor_log2.txt')
-    GPS_plot(GPS)
-    #Mag_plot(Mag)
-    #XYZ_plot(Lin_Accel)
-    #XYZ_plot(Accel)
+    # GPS_plot(GPS)
+    # Mag_plot(Mag)
+    # XYZ_plot(Lin_Accel)
+    # XYZ_plot(Accel)
 

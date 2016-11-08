@@ -120,7 +120,7 @@ def GPS_plot(data):
     time, north, east, acc = [],[],[],[]
     for i in data:
         time.append(i[0])
-        acc.append(i[1]['Accuracy'])
+        acc.append(i[1]['Accuracy']/2)
         east.append(i[1]['Easting'])
         north.append(i[1]['Northing'])
     plt.errorbar(east, north, xerr=acc, yerr=acc, label='GPS', ecolor='b', color='k', marker='o')
@@ -134,8 +134,8 @@ def GPS_plot(data):
 
 if __name__ == "__main__":
     [Mag, Gyro, GPS, Accel, Lin_Accel] = sensor_log_lists('sensor_log2.txt')
-    # GPS_plot(GPS)
-    # Mag_plot(Mag)
+    #GPS_plot(GPS)
+    Mag_plot(Mag)
     # XYZ_plot(Lin_Accel)
     # XYZ_plot(Accel)
 

@@ -44,19 +44,23 @@ import java.util.Date;
 import java.util.Locale;
 
 
-public class DetailViewActivity extends AppCompatActivity {
+public class DetailViewActivity extends AppCompatActivity{
 
-    private BroadcastReceiver broadcastReceiver;
+    private BroadcastReceiver GPSReceiver;
+    private BroadcastReceiver compassReceiver;
     TextView latValTxt;
     TextView longValTxt;
-    TextView distValTxt;
+    TextView headingValTxt;
     TextView speedValTxt;
     TextView statusTxt;
     TextView topRightTxt;
     LogDBHandler dbHandler;
     String startDateTime;
+    SensorManager sensorManager;
+    float[] orientationValues;
     double milliTimeOld;
     double milliTimeNew;
+    double heading = Double.NaN;
     int n;
 
     @Override
@@ -66,10 +70,12 @@ public class DetailViewActivity extends AppCompatActivity {
 
         latValTxt = (TextView) findViewById(R.id.latValTxt);
         longValTxt = (TextView) findViewById(R.id.longValTxt);
-        distValTxt = (TextView) findViewById(R.id.distValTxt);
+        headingValTxt = (TextView) findViewById(R.id.headingValTxt);
         speedValTxt = (TextView) findViewById(R.id.speedValTxt);
         statusTxt = (TextView) findViewById(R.id.statusTxt);
         topRightTxt = (TextView) findViewById(R.id.topRightTxt);
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        orientationValues = new float[3];
         dbHandler = new LogDBHandler(this);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -82,8 +88,9 @@ public class DetailViewActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(broadcastReceiver == null){
-            broadcastReceiver = new BroadcastReceiver() {
+        if(GPSReceiver == null){
+            GPSReceiver = new BroadcastReceiver() {
+                //GPS Data Update
                 @Override
                 public void onReceive(Context context, Intent intent) {
 
@@ -93,7 +100,7 @@ public class DetailViewActivity extends AppCompatActivity {
                     double ds = Double.NaN;
                     double dt = Double.NaN;
                     double speed = Double.NaN;
-                    double heading = Double.NaN;
+
                     milliTimeNew = System.currentTimeMillis();
 
                     if(latValTxt.getText().toString() != "") { //Don't do first time round
@@ -109,8 +116,8 @@ public class DetailViewActivity extends AppCompatActivity {
                         speed = (ds / dt) / 0.5144;
 
                         //Update Screen Text
-                        distValTxt.setText(String.format("%.3f", ds));
                         speedValTxt.setText(String.format("%.3f", speed));
+                        headingValTxt.setText(String.format("%.3f", heading));
                     }
 
                     //Update Screen Text
@@ -136,11 +143,6 @@ public class DetailViewActivity extends AppCompatActivity {
                             File outputFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "SailingStats" + File.separator + startDateTime + " Data.csv");
                             output = new FileWriter(outputFile, true);
                             output.write("\r\n" + dateString + "," + timeString + "," + newLatVal + "," + newLongVal + "," + ds + "," + dt + "," + speed + "," + heading);
-
-
-
-                            System.out.println("Logged to:" + outputFile.getPath());
-                            System.out.println("CSV Data File Size:" + outputFile.length());
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
                         } catch (IOException e) {
@@ -154,7 +156,7 @@ public class DetailViewActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                         }
-                        statusTxt.setGravity(Gravity.LEFT);
+
                         statusTxt.setText("Recording data...");
                         topRightTxt.setText((n - 9) + " Data Points");
                     }
@@ -163,16 +165,32 @@ public class DetailViewActivity extends AppCompatActivity {
 
                 }
             };
+
+            if(compassReceiver == null){
+                compassReceiver = new BroadcastReceiver() {
+                    @Override
+                    public void onReceive(Context context, Intent intent) {
+                        heading = (double) intent.getExtras().get("heading");
+                    }
+                };
+            }
         }
-        registerReceiver(broadcastReceiver, new IntentFilter("location_update"));
+
+
+        registerReceiver(GPSReceiver, new IntentFilter("location_update"));
+        registerReceiver(compassReceiver, new IntentFilter("compass_update"));
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         //Stop the GPS logging when closed
-        if(broadcastReceiver != null){
-            unregisterReceiver(broadcastReceiver);
+        if(GPSReceiver != null){
+            unregisterReceiver(GPSReceiver);
+        }
+
+        if(compassReceiver != null){
+            unregisterReceiver(compassReceiver);
         }
     }
 
@@ -212,15 +230,16 @@ public class DetailViewActivity extends AppCompatActivity {
 
         startStreamBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), GPS_Service.class);
-                startService(i);
+                Intent GPS_Service = new Intent(getApplicationContext(), GPS_Service.class);
+                Intent Compass_Service = new Intent(getApplicationContext(), Compass_Service.class);
+                startService(GPS_Service);
+                startService(Compass_Service);
                 setBtnDown(true, startStreamBtn);
                 setBtnDown(false, stopStreamBtn);
                 Date curDate = new Date();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.UK);
                 startDateTime = dateFormat.format(curDate);
                 File output = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "SailingStats" + File.separator + startDateTime + " Data.csv");
-                File output2 = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "SailingStats" + File.separator + startDateTime + " Data.gpx");
                 try {
                     output.createNewFile();
 
@@ -237,19 +256,22 @@ public class DetailViewActivity extends AppCompatActivity {
                 }
 
                 statusTxt.setText("Waiting for GPS...");
+                topRightTxt.setText("");
                 n = 0;
             }
         });
 
         stopStreamBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), GPS_Service.class);
-                stopService(i);
+                Intent GPS_Service = new Intent(getApplicationContext(), GPS_Service.class);
+                Intent Compass_Service = new Intent(getApplicationContext(), Compass_Service.class);
+                stopService(GPS_Service);
+                stopService(Compass_Service);
                 setBtnDown(false, startStreamBtn);
                 setBtnDown(true, stopStreamBtn);
                 longValTxt.setText("");
                 latValTxt.setText("");
-                distValTxt.setText("");
+                headingValTxt.setText("");
                 speedValTxt.setText("");
                 statusTxt.setText("");
             }
@@ -280,6 +302,4 @@ public class DetailViewActivity extends AppCompatActivity {
             button.setClickable(true);
         }
     }
-
-
 }

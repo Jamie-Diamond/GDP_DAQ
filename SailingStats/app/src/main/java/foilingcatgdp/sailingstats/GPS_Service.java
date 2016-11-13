@@ -31,7 +31,7 @@ public class GPS_Service extends Service {
 
     @Override
     public void onCreate() {
-
+        System.out.println("GPS Service started.");
 
         listener = new LocationListener() {
             @Override
@@ -70,6 +70,7 @@ public class GPS_Service extends Service {
     public void onDestroy() {
         if(locationManager != null){
             locationManager.removeUpdates(listener);
+            System.out.println("GPS Service stopped.");
         }
     }
 }

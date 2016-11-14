@@ -40,6 +40,76 @@ def sensor_log_read(input):
     return Magnetic, Gyro, GPS, Accel, Lin_Accel
 
 
+def data_save(Mag, Gyro, GPS, Accel, Lin_Accel, file='saved'):
+    print('Saving Data to File')
+    file += '_'
+    file1 = file + 'mag.txt'
+    print('Saving to:', file1)
+    with open(file1, 'w') as out_file:
+        txt = ''
+        for i in Mag:
+            txt += str(i) + '\n'
+        out_file.write(txt)
+    file1 = file + 'gyro.txt'
+    print('Saving to:', file1)
+    with open(file1, 'w') as out_file:
+        txt = ''
+        for i in Gyro:
+            txt += str(i)+ '\n'
+        out_file.write(txt)
+    file1 = file + 'gps.txt'
+    print('Saving to:', file1)
+    with open(file1, 'w') as out_file:
+        txt = ''
+        for i in GPS:
+            txt += str(i)+ '\n'
+        out_file.write(txt)
+    file1 = file + 'accel.txt'
+    print('Saving to:', file1)
+    with open(file1, 'w') as out_file:
+        txt = ''
+        for i in Accel:
+            txt += str(i)+ '\n'
+        out_file.write(txt)
+    file1 = file + 'lin_accel.txt'
+    print('Saving to:', file1)
+    with open(file1, 'w') as out_file:
+        txt = ''
+        for i in Lin_Accel:
+            txt += str(i)+ '\n'
+        out_file.write(txt)
+    print('Data saved to file')
+
+
+def data_read(file='saved'):
+    import json
+    import csv
+    import ast
+    print('Reading data from:', file, '_____.txt')
+    with open(file + '_mag.txt', 'r') as txt:
+        Mag = []
+        for i in txt.readlines():
+            Mag.append(json.loads(i))
+    with open(file + '_gyro.txt', 'r') as txt:
+        Gyro = []
+        for i in txt.readlines():
+            Gyro.append(json.loads(i))
+    with open(file + '_gps.txt', 'r') as txt:
+        GPS = []
+        for i in txt.readlines():
+            GPS.append(ast.literal_eval(i))
+    with open(file + '_lin_accel.txt', 'r') as txt:
+        Lin_Accel = []
+        for i in txt.readlines():
+            Lin_Accel.append(i)
+    with open(file + '_accel.txt', 'r') as txt:
+        Accel = []
+        for i in txt.readlines():
+            Accel.append(json.loads(i))
+    print('Data read from:', file, '_____.txt')
+    return Mag, Gyro, GPS, Accel, Lin_Accel
+
+
 def freq_out(data):
     from statistics import mean
     gap = []
@@ -205,16 +275,18 @@ def movingaverage(interval, window_size):
 
 
 if __name__ == "__main__":
-    [Mag, Gyro, GPS, Accel, Lin_Accel] = sensor_log_read('log.txt')
+    #[Mag, Gyro, GPS, Accel, Lin_Accel] = sensor_log_read('log.txt')
+    #data_save(Mag, Gyro, GPS, Accel, Lin_Accel)
+    [Mag, Gyro, GPS, Accel, Lin_Accel] = data_read()
     import matplotlib.pyplot as plt
     plt.figure(1)
     GPS_plot(GPS)
     plt.figure(2)
     GPS_speed_plot(GPS)
-    plt.figure(3)
-    Mag_plot(Mag)
-    plt.figure(4)
-    XYZ_plot(Lin_Accel)
+    # plt.figure(3)
+    # Mag_plot(Mag)
+    # plt.figure(4)
+    # XYZ_plot(Lin_Accel)
     #
     # [Time, Y] = Y_plot(Lin_Accel)
     # Y = movingaverage(Y, 50)

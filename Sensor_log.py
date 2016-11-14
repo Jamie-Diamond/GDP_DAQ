@@ -119,6 +119,7 @@ def Y_plot(data, idx=1):
     plt.legend()
     plt.xlabel("Time (unix seconds)")
     plt.grid(True)
+    plt.show()
     return time, y
 
 
@@ -131,8 +132,9 @@ def Mag_plot(data):
     plt.plot(time, phi, 'rx', label='phi')
     plt.legend()
     plt.xlabel("UnixTime stamp [s]")
-    plt.ylabel("Heading [º]")
+    plt.ylabel("Heading [deg]")
     plt.grid(True)
+    plt.show()
 
 
 def GPS_plot(data):
@@ -149,6 +151,7 @@ def GPS_plot(data):
     plt.ylabel("North [m]")
     plt.grid(True)
     plt.axis('equal')
+    plt.show()
 
 
 def GPS_speed_plot(data):
@@ -177,18 +180,18 @@ def GPS_speed_plot(data):
     plt.grid(True)
 
 
-def integrator(y, time):
-    import matplotlib.pyplot as plt
-    from scipy import integrate
-    import numpy as np
-    plt.subplot(2, 1, 1)
-    plt.plot(Time, y)
-    yint = integrate.cumtrapz(y, time, initial=0)
-    yint = np.ndarray.tolist(yint)
-    plt.subplot(2, 1, 2)
-    plt.plot(time, yint)
-    plt.show()
-    return yint
+# def integrator(y, time):
+#     import matplotlib.pyplot as plt
+#     from scipy import integrate
+#     import numpy as np
+#     plt.subplot(2, 1, 1)
+#     plt.plot(Time, y)
+#     yint = integrate.cumtrapz(y, time, initial=0)
+#     yint = np.ndarray.tolist(yint)
+#     plt.subplot(2, 1, 2)
+#     plt.plot(time, yint)
+#     plt.show()
+#     return yint
 
 def movingaverage(interval, window_size):
     import numpy
@@ -196,12 +199,40 @@ def movingaverage(interval, window_size):
     temp = numpy.convolve(interval, window, 'same')
     return numpy.ndarray.tolist(temp)
 
+def getUserRequirement():
+    request = raw_input("What would you like? ").strip()
+
+    if request == "Y plot":
+        return Y_plot(Lin_Accel), getUserRequirement()
+    elif request == "Mag plot":
+        return Mag_plot(Mag), getUserRequirement()
+    elif request == "GPS plot":
+        return GPS_plot(GPS), getUserRequirement()
+    elif request == "End" or request == "end" or request == "Stop" or request == "stop" or request == "Close" or request == "close":
+        return True
+    else:
+        print("Request is not recognised try again."
+              "\r\nCommands:"
+              "\r\n - Y plot"
+              "\r\n - Mag Plot"
+              "\r\n - GPS Plot"
+              "\r\n - End"
+              "\r\n")
+        return getUserRequirement()
+
+Mag, Gyro, GPS, Accel, Lin_Accel = (None,)*5
 
 if __name__ == "__main__":
-    [Mag, Gyro, GPS, Accel, Lin_Accel] = sensor_log_lists('Drive_log.txt')
+    #inputFile = input("What is the input filename? ")
+    #outputFile = input("What is the output filename? ")
+    #[Mag, Gyro, GPS, Accel, Lin_Accel] = sensor_log_lists(inputFile)
+    [Mag, Gyro, GPS, Accel, Lin_Accel] = sensor_log_lists("sensor_log1.txt")
     import matplotlib.pyplot as plt
-    [Time, Y] = Y_plot(Lin_Accel)
-    Y = movingaverage(Y, 50)
-    integrator(Y, Time)
+
+    getUserRequirement()
+
+    #[Time, Y] = Y_plot(Lin_Accel)
+    #Y = movingaverage(Y, 50)
+    #integrator(Y, Time)
 
 

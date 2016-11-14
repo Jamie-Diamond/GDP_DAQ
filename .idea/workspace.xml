@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bbf61bd8-cf84-40ed-b7dc-f5f7b0b8020e" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Sensor_log.py" afterPath="$PROJECT_DIR$/Sensor_log.py" />
     </list>
     <ignored path="GDP_DAQ.iws" />
@@ -23,34 +23,35 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="sensor_log1.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sensor_log1.txt">
+      <file leaf-file-name="Sensor_log.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Sensor_log.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="17" column="31" selection-start-line="3" selection-start-column="6" selection-end-line="17" selection-end-column="31" />
-              <folding />
+            <state relative-caret-position="448">
+              <caret line="215" column="17" selection-start-line="215" selection-start-column="17" selection-end-line="215" selection-end-column="17" />
+              <folding>
+                <element signature="e#32#1470#0" expanded="false" />
+                <element signature="e#395#479#0" expanded="false" />
+                <element signature="e#1497#1816#0" expanded="false" />
+                <element signature="e#1847#2457#0" expanded="false" />
+                <element signature="e#2488#2776#0" expanded="false" />
+                <element signature="e#2814#3380#0" expanded="false" />
+                <element signature="e#3412#3670#0" expanded="false" />
+                <element signature="e#3697#3967#0" expanded="false" />
+                <element signature="e#3994#4440#0" expanded="false" />
+                <element signature="e#5352#5651#0" expanded="false" />
+                <element signature="e#5699#5862#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Sensor_log.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Sensor_log.py">
+      <file leaf-file-name="CSV_GPX_Tools.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/CSV_GPX_Tools.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="478">
-              <caret line="136" column="5" selection-start-line="136" selection-start-column="5" selection-end-line="136" selection-end-column="5" />
+            <state relative-caret-position="540">
+              <caret line="43" column="22" selection-start-line="43" selection-start-column="22" selection-end-line="43" selection-end-column="22" />
               <folding>
-                <element signature="e#101#1006#0" expanded="false" />
-                <element signature="e#321#1006#0" expanded="false" />
-                <element signature="e#360#444#0" expanded="false" />
-                <element signature="e#492#572#0" expanded="false" />
-                <element signature="e#619#698#0" expanded="false" />
-                <element signature="e#779#858#0" expanded="false" />
-                <element signature="e#921#1006#0" expanded="false" />
-                <element signature="e#1414#1743#0" expanded="false" />
-                <element signature="e#1487#1529#0" expanded="false" />
-                <element signature="e#1563#1644#0" expanded="false" />
-                <element signature="e#2141#2396#0" expanded="false" />
-                <element signature="e#2423#2968#0" expanded="false" />
+                <element signature="e#0#10#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -117,6 +118,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -137,7 +139,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
       <pane id="Scope" />
       <pane id="PackagesPane" />
       <pane id="AndroidView" />
@@ -408,18 +409,19 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1680" height="1024" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24954791" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32939914" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32959184" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32832617" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3444206" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34656653" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39914164" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39806867" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -434,7 +436,6 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32959184" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -482,16 +483,6 @@
           <line>8</line>
           <option name="timeStamp" value="27" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Sensor_log.py</url>
-          <line>51</line>
-          <option name="timeStamp" value="35" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Sensor_log.py</url>
-          <line>20</line>
-          <option name="timeStamp" value="42" />
-        </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
@@ -500,11 +491,41 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="44" />
+      <option name="time" value="54" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/Sensor_log.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#32#1470#0" expanded="false" />
+            <element signature="e#395#479#0" expanded="false" />
+            <element signature="e#1497#1816#0" expanded="false" />
+            <element signature="e#1847#2457#0" expanded="false" />
+            <element signature="e#2488#2776#0" expanded="false" />
+            <element signature="e#2814#3380#0" expanded="false" />
+            <element signature="e#3412#3670#0" expanded="false" />
+            <element signature="e#3697#3967#0" expanded="false" />
+            <element signature="e#3994#4440#0" expanded="false" />
+            <element signature="e#5352#5651#0" expanded="false" />
+            <element signature="e#5699#5862#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CSV_GPX_Tools.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="540">
+          <caret line="43" column="22" selection-start-line="43" selection-start-column="22" selection-end-line="43" selection-end-column="22" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/CSV_GPX_Tools.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="795">
@@ -520,18 +541,17 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#101#1006#0" expanded="false" />
-            <element signature="e#321#1006#0" expanded="false" />
-            <element signature="e#360#444#0" expanded="false" />
-            <element signature="e#492#572#0" expanded="false" />
-            <element signature="e#619#698#0" expanded="false" />
-            <element signature="e#779#858#0" expanded="false" />
-            <element signature="e#921#1006#0" expanded="false" />
-            <element signature="e#1414#1743#0" expanded="false" />
-            <element signature="e#1487#1529#0" expanded="false" />
-            <element signature="e#1563#1644#0" expanded="false" />
-            <element signature="e#2141#2396#0" expanded="false" />
-            <element signature="e#2423#2968#0" expanded="false" />
+            <element signature="e#32#1470#0" expanded="false" />
+            <element signature="e#395#479#0" expanded="false" />
+            <element signature="e#1497#1816#0" expanded="false" />
+            <element signature="e#1847#2457#0" expanded="false" />
+            <element signature="e#2488#2776#0" expanded="false" />
+            <element signature="e#2814#3380#0" expanded="false" />
+            <element signature="e#3412#3670#0" expanded="false" />
+            <element signature="e#3697#3967#0" expanded="false" />
+            <element signature="e#3994#4440#0" expanded="false" />
+            <element signature="e#5352#5651#0" expanded="false" />
+            <element signature="e#5699#5862#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -540,7 +560,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
           <caret line="9" column="8" selection-start-line="9" selection-start-column="2" selection-end-line="9" selection-end-column="8" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -567,18 +586,17 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#101#1006#0" expanded="false" />
-            <element signature="e#321#1006#0" expanded="false" />
-            <element signature="e#360#444#0" expanded="false" />
-            <element signature="e#492#572#0" expanded="false" />
-            <element signature="e#619#698#0" expanded="false" />
-            <element signature="e#779#858#0" expanded="false" />
-            <element signature="e#921#1006#0" expanded="false" />
-            <element signature="e#1414#1743#0" expanded="false" />
-            <element signature="e#1487#1529#0" expanded="false" />
-            <element signature="e#1563#1644#0" expanded="false" />
-            <element signature="e#2141#2396#0" expanded="false" />
-            <element signature="e#2423#2968#0" expanded="false" />
+            <element signature="e#32#1470#0" expanded="false" />
+            <element signature="e#395#479#0" expanded="false" />
+            <element signature="e#1497#1816#0" expanded="false" />
+            <element signature="e#1847#2457#0" expanded="false" />
+            <element signature="e#2488#2776#0" expanded="false" />
+            <element signature="e#2814#3380#0" expanded="false" />
+            <element signature="e#3412#3670#0" expanded="false" />
+            <element signature="e#3697#3967#0" expanded="false" />
+            <element signature="e#3994#4440#0" expanded="false" />
+            <element signature="e#5352#5651#0" expanded="false" />
+            <element signature="e#5699#5862#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -587,7 +605,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
           <caret line="9" column="8" selection-start-line="9" selection-start-column="2" selection-end-line="9" selection-end-column="8" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -685,13 +702,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file:///Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5/codecs.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="177">
-          <caret line="308" column="0" selection-start-line="308" selection-start-column="0" selection-end-line="308" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/sensor_log2.txt">
       <provider selected="true" editor-type-id="LargeFileEditor">
         <state />
@@ -701,17 +711,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CSV_GPX_Tools.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-107">
-          <caret line="69" column="39" selection-start-line="69" selection-start-column="39" selection-end-line="69" selection-end-column="39" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -727,27 +726,42 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
           <caret line="17" column="31" selection-start-line="3" selection-start-column="6" selection-end-line="17" selection-end-column="31" />
-          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5/codecs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="308" column="0" selection-start-line="308" selection-start-column="0" selection-end-line="308" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CSV_GPX_Tools.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="540">
+          <caret line="43" column="22" selection-start-line="43" selection-start-column="22" selection-end-line="43" selection-end-column="22" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Sensor_log.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="478">
-          <caret line="136" column="5" selection-start-line="136" selection-start-column="5" selection-end-line="136" selection-end-column="5" />
+        <state relative-caret-position="448">
+          <caret line="215" column="17" selection-start-line="215" selection-start-column="17" selection-end-line="215" selection-end-column="17" />
           <folding>
-            <element signature="e#101#1006#0" expanded="false" />
-            <element signature="e#321#1006#0" expanded="false" />
-            <element signature="e#360#444#0" expanded="false" />
-            <element signature="e#492#572#0" expanded="false" />
-            <element signature="e#619#698#0" expanded="false" />
-            <element signature="e#779#858#0" expanded="false" />
-            <element signature="e#921#1006#0" expanded="false" />
-            <element signature="e#1414#1743#0" expanded="false" />
-            <element signature="e#1487#1529#0" expanded="false" />
-            <element signature="e#1563#1644#0" expanded="false" />
-            <element signature="e#2141#2396#0" expanded="false" />
-            <element signature="e#2423#2968#0" expanded="false" />
+            <element signature="e#32#1470#0" expanded="false" />
+            <element signature="e#395#479#0" expanded="false" />
+            <element signature="e#1497#1816#0" expanded="false" />
+            <element signature="e#1847#2457#0" expanded="false" />
+            <element signature="e#2488#2776#0" expanded="false" />
+            <element signature="e#2814#3380#0" expanded="false" />
+            <element signature="e#3412#3670#0" expanded="false" />
+            <element signature="e#3697#3967#0" expanded="false" />
+            <element signature="e#3994#4440#0" expanded="false" />
+            <element signature="e#5352#5651#0" expanded="false" />
+            <element signature="e#5699#5862#0" expanded="false" />
           </folding>
         </state>
       </provider>

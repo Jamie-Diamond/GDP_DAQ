@@ -1,7 +1,8 @@
-def sensor_log_lists(input):
+def sensor_log_read(input):
     import csv
     import json
     with open(input) as csvfile:
+        print('Opened File', input)
         next(csvfile)  # skip headings
         reader = csv.reader(csvfile, delimiter='\n')
         Magnetic = []
@@ -25,6 +26,7 @@ def sensor_log_lists(input):
             if 'Linear Acceleration' in a[0]:
                 b = a[0].split("|")
                 Lin_Accel.append([float(b[3])/1000, json.loads(b[2])])
+    print('Closed:', input)
     GPS = GPS_Data_Tidy(GPS)
     print('Magn Data points:', len(Magnetic))
     freq_out(Magnetic)
@@ -55,6 +57,7 @@ def freq_out(data):
 
 
 def GPS_Data_Tidy(GPS):
+    print('Proccesing GPS data')
     import utm
     new_GPS = []
     idx = -1
@@ -75,6 +78,7 @@ def GPS_Data_Tidy(GPS):
 
 
 def Mag_Data_Tidy(Mag):
+    print('Proccesing mag data')
     import math
     new_mag = []
     for i in Mag:
@@ -137,7 +141,7 @@ def Mag_plot(data):
 
 def GPS_plot(data):
     import matplotlib.pyplot as plt
-    time, north, east, acc = [],[],[],[]
+    time, north, east, acc = [], [], [], []
     for i in data:
         time.append(i[0])
         acc.append(i[1]['Accuracy']/2)
@@ -155,26 +159,29 @@ def GPS_speed_plot(data):
     speeds = []
     times = []
     time = []
-    acc = []
     east = []
     north = []
     import matplotlib.pyplot as plt
     for i in data:
         time.append(i[0])
-        acc.append(i[1]['Accuracy'] / 2)
         east.append(i[1]['Easting'])
         north.append(i[1]['Northing'])
     for i in range(len(data)-1):
         Ediff = east[i] - east[i+1]
         Ndiff = north[i] - north[i+1]
         hyp = (Ediff**2+Ndiff**2)**0.5
-        timediff = (time[i+1]-time[i])/1000
+        timediff = (time[i+1]-time[i])
         times.append(time[i])
-        speeds.append(hyp/timediff)
-    plt.plot(times, speeds)
+        speeds.append((hyp/timediff)/0.514)
+    speed_ave = movingaverage(speeds, 7)
+    plt.plot(times, speeds, 'b', label='RAW')
+    plt.plot(times, speed_ave, 'r',  label='7pt moving_ave')
+    plt.legend()
     plt.xlabel("UnixTime [s]")
-    plt.ylabel("Speed [m/s]")
+    plt.ylabel("Speed [knts]")
     plt.grid(True)
+    print('Max Speed (RAW)=', max(speeds), 'knts')
+    print('Max Speed (7pt moving ave)=', max(speed_ave), 'knts')
 
 
 def integrator(y, time):
@@ -182,7 +189,7 @@ def integrator(y, time):
     from scipy import integrate
     import numpy as np
     plt.subplot(2, 1, 1)
-    plt.plot(Time, y)
+    plt.plot(time, y)
     yint = integrate.cumtrapz(y, time, initial=0)
     yint = np.ndarray.tolist(yint)
     plt.subplot(2, 1, 2)
@@ -198,10 +205,19 @@ def movingaverage(interval, window_size):
 
 
 if __name__ == "__main__":
-    [Mag, Gyro, GPS, Accel, Lin_Accel] = sensor_log_lists('Drive_log.txt')
+    [Mag, Gyro, GPS, Accel, Lin_Accel] = sensor_log_read('log.txt')
     import matplotlib.pyplot as plt
-    [Time, Y] = Y_plot(Lin_Accel)
-    Y = movingaverage(Y, 50)
-    integrator(Y, Time)
-
+    plt.figure(1)
+    GPS_plot(GPS)
+    plt.figure(2)
+    GPS_speed_plot(GPS)
+    plt.figure(3)
+    Mag_plot(Mag)
+    plt.figure(4)
+    XYZ_plot(Lin_Accel)
+    #
+    # [Time, Y] = Y_plot(Lin_Accel)
+    # Y = movingaverage(Y, 50)
+    # integrator(Y, Time)
+    plt.show()
 

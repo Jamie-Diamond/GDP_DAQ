@@ -1,5 +1,5 @@
 import sys
-import windDataTools
+#import windDataTools
 
 def sensor_log_read(input):
     import csv
@@ -296,6 +296,12 @@ def GPS_speed_plot(data):
 #     plt.plot(time, yint)
 #     plt.show()
 #     return yint
+    # print('Max Speed (RAW)=', max(speeds), 'knts')
+    mxspd = round(max(speed_ave),2)
+    print('Max Speed (7 second average)=', mxspd, 'knts')
+    speed_ave = movingaverage(speeds, 15)
+    mxspd = round(max(speed_ave), 2)
+    print('Max Speed (15 second average)=', mxspd, 'knts')
 
 def integrator(y, time):
     import matplotlib.pyplot as plt
@@ -338,8 +344,6 @@ def getUserRequirement():
               "\r\n - End"
               "\r\n")
         return getUserRequirement()
-
-
 # Mag, Gyro, GPS, Accel, Lin_Accel = (None,)*5
 
 # if __name__ == "__main__":
@@ -363,6 +367,41 @@ def getUserRequirement():
 #     # # Y = movingaverage(Y, 50)
 #     # # integrator(Y, Time)
 #     # plt.show()
+# if __name__ == "__main__":
+#     #inputFile = input("What is the input filename? ")
+#     #outputFile = input("What is the output filename? ")
+#     [Mag, Gyro, GPS, Accel, Lin_Accel] = data_read()
+#     import matplotlib.pyplot as plt
+#     #getUserRequirement()
+#
+#     # plt.figure(1)
+#     # GPS_plot(GPS)
+#     # plt.figure(2)
+#     # GPS_speed_plot(GPS)
+#     # # plt.figure(3)
+#     # # Mag_plot(Mag)
+#     # # plt.figure(4)
+#     # # XYZ_plot(Lin_Accel)
+#     # #
+#     # # [Time, Y] = Y_plot(Lin_Accel)
+#     # # Y = movingaverage(Y, 50)
+#     # # integrator(Y, Time)
+#     # plt.show()
+#     plt.figure(1)
+#     GPS_plot(GPS)
+#     plt.figure(2)
+#     GPS_speed_plot(GPS)
+#     plt.figure(3)
+#     #Mag_plot(Mag)
+#     #plt.figure(4)
+#     #XYZ_plot(Lin_Accel)
+#     #
+#     # print('___')
+#     # plt.figure(5)
+#     # [Time, Y] = Y_plot(Lin_Accel)
+#     # Y = movingaverage(Y, 50)
+#     # integrator(Y, Time)
+#     plt.show()
 
 Mag, Gyro, GPS, Accel, Lin_Accel = sensor_log_read('log.txt')
-windDataTools.getWindData(GPS)
+#windDataTools.getWindData(GPS)

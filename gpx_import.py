@@ -17,7 +17,7 @@ def gpx_lat_long_duration(name):
 
 def gpx_reader(name):
     import utm
-    import datetime
+    from datetime import datetime
     [lats, longs, times_dt] = gpx_lat_long_duration(name)
     east = []
     north = []
@@ -26,9 +26,12 @@ def gpx_reader(name):
         [eas, nor, _, _] = utm.from_latlon(lats[i], longs[i])
         east.append(eas)
         north.append(nor)
-        time = (times_dt - datetime(1970,1,1)).total_seconds()
-        times.append(time)
-    
+        time = times_dt[i] - datetime(1970,1,1)
+        times.append(time.total_seconds())
+    output = []
+    for i in (range(len(east))):
+        output.append([times[i], {'Easting': east[i], 'Northing': north[i]}])
+    return output
 
 if __name__ == "__main__":
     gpx_reader('cycle_in_garmin.gpx')

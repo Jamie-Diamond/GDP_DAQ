@@ -16,7 +16,7 @@ def sensor_log_read(input):
         Accel = []
         Lin_Accel = []
         row_count = sum(1 for row in csv.reader(open(input), delimiter='\n'))
-        levelCheck = 0.001 * row_count
+        levelCheck = 0.0
         i = 0
         for a in csvobj:
 
@@ -243,7 +243,10 @@ def GPS_plot(data):
     time, north, east, acc = [], [], [], []
     for i in data:
         time.append(i[0])
-        acc.append(i[1]['Accuracy'] / 2)
+        try:
+            acc.append(i[1]['Accuracy']/2)
+        except KeyError:
+            acc.append(0)
         east.append(i[1]['Easting'])
         north.append(i[1]['Northing'])
     plt.errorbar(east, north, xerr=acc, yerr=acc, label='GPS', ecolor='b', color='k', marker='o')
@@ -252,7 +255,6 @@ def GPS_plot(data):
     plt.ylabel("North [m]")
     plt.grid(True)
     plt.axis('equal')
-    plt.show()
 
 
 def GPS_speed_plot(data):
@@ -401,6 +403,27 @@ def getUserRequirement():
 #     # [Time, Y] = Y_plot(Lin_Accel)
 #     # Y = movingaverage(Y, 50)
 #     # integrator(Y, Time)
+#     plt.show()
+
+Mag, Gyro, GPS, Accel, Lin_Accel = (None,)*5
+
+# if __name__ == "__main__":
+#     #inputFile = input("What is the input filename? ")
+#     #outputFile = input("What is the output filename? ")
+#     [Mag, Gyro, GPS, Accel, Lin_Accel] = data_read()
+#     import matplotlib.pyplot as plt
+#     #getUserRequirement()
+#
+#     plt.figure(1)
+#     GPS_plot(GPS)
+#     plt.figure(2)
+#     GPS_speed_plot(GPS)
+#     from gpx_import import gpx_reader
+#     garminGPS = gpx_reader('Garmin_TestSail_1.gpx')
+#     plt.figure(3)
+#     GPS_plot(garminGPS)
+#     plt.figure(4)
+#     GPS_speed_plot(garminGPS)
 #     plt.show()
 
 Mag, Gyro, GPS, Accel, Lin_Accel = sensor_log_read('log.txt')

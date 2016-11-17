@@ -325,85 +325,28 @@ def movingaverage(interval, window_size):
     temp = numpy.convolve(interval, window, 'same')
     return numpy.ndarray.tolist(temp)
 
-
-def getUserRequirement():
-    request = raw_input("What would you like? ").strip()
-
-    if request == "Y plot":
-        return Y_plot(Lin_Accel), getUserRequirement()
-    elif request == "Mag plot":
-        return Mag_plot(Mag), getUserRequirement()
-    elif request == "GPS plot":
-        return GPS_plot(GPS), getUserRequirement()
-    elif request == "End" or request == "end" or request == "Stop" or request == "stop" or request == "Close" or request == "close":
-        return True
-    else:
-        print("Request is not recognised try again."
-              "\r\nCommands:"
-              "\r\n - Y plot"
-              "\r\n - Mag Plot"
-              "\r\n - GPS Plot"
-              "\r\n - End"
-              "\r\n")
-        return getUserRequirement()
-# Mag, Gyro, GPS, Accel, Lin_Accel = (None,)*5
-
-# if __name__ == "__main__":
-#     #inputFile = input("What is the input filename? ")
-#     #outputFile = input("What is the output filename? ")
-#     [Mag, Gyro, GPS, Accel, Lin_Accel] = data_read()
-#     import matplotlib.pyplot as plt
+# to be moved to new file
+# def getUserRequirement():
+#     request = raw_input("What would you like? ").strip()
 #
-#     getUserRequirement()
-#
-#     # plt.figure(1)
-#     # GPS_plot(GPS)
-#     # plt.figure(2)
-#     # GPS_speed_plot(GPS)
-#     # # plt.figure(3)
-#     # # Mag_plot(Mag)
-#     # # plt.figure(4)
-#     # # XYZ_plot(Lin_Accel)
-#     # #
-#     # # [Time, Y] = Y_plot(Lin_Accel)
-#     # # Y = movingaverage(Y, 50)
-#     # # integrator(Y, Time)
-#     # plt.show()
-# if __name__ == "__main__":
-#     #inputFile = input("What is the input filename? ")
-#     #outputFile = input("What is the output filename? ")
-#     [Mag, Gyro, GPS, Accel, Lin_Accel] = data_read()
-#     import matplotlib.pyplot as plt
-#     #getUserRequirement()
-#
-#     # plt.figure(1)
-#     # GPS_plot(GPS)
-#     # plt.figure(2)
-#     # GPS_speed_plot(GPS)
-#     # # plt.figure(3)
-#     # # Mag_plot(Mag)
-#     # # plt.figure(4)
-#     # # XYZ_plot(Lin_Accel)
-#     # #
-#     # # [Time, Y] = Y_plot(Lin_Accel)
-#     # # Y = movingaverage(Y, 50)
-#     # # integrator(Y, Time)
-#     # plt.show()
-#     plt.figure(1)
-#     GPS_plot(GPS)
-#     plt.figure(2)
-#     GPS_speed_plot(GPS)
-#     plt.figure(3)
-#     #Mag_plot(Mag)
-#     #plt.figure(4)
-#     #XYZ_plot(Lin_Accel)
-#     #
-#     # print('___')
-#     # plt.figure(5)
-#     # [Time, Y] = Y_plot(Lin_Accel)
-#     # Y = movingaverage(Y, 50)
-#     # integrator(Y, Time)
-#     plt.show()
+#     if request == "Y plot":
+#         return Y_plot(Lin_Accel), getUserRequirement()
+#     elif request == "Mag plot":
+#         return Mag_plot(Mag), getUserRequirement()
+#     elif request == "GPS plot":
+#         return GPS_plot(GPS), getUserRequirement()
+#     elif request == "End" or request == "end" or request == "Stop" or request == "stop" or request == "Close" or request == "close":
+#         return True
+#     else:
+#         print("Request is not recognised try again."
+#               "\r\nCommands:"
+#               "\r\n - Y plot"
+#               "\r\n - Mag Plot"
+#               "\r\n - GPS Plot"
+#               "\r\n - End"
+#               "\r\n")
+#         return getUserRequirement()
+
 
 Mag, Gyro, GPS, Accel, Lin_Accel = (None,)*5
 

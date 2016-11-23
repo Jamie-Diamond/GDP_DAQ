@@ -61,6 +61,7 @@ def roundNo(x, base=5):
 def alignGPSTimeAndWindData(GPS, rawWind):
     alignedData = []
     for i in GPS:
+        found = 0
         timeStamp = i[0]
         rmin, min, hour, day, sMonth, lMonth, year = convertTimeStamp(timeStamp)
         time = "%02d:%02d" % (int(hour), int(rmin))
@@ -71,13 +72,19 @@ def alignGPSTimeAndWindData(GPS, rawWind):
                     "Wind Dir": j[3],
                     "Wind Gust": j[4]
                 }])
+                found = 1
+        if found == 0:
+            alignedData.append([timeStamp, {
+                "Wind Speed": 0,
+                "Wind Dir": 0,
+                "Wind Gust": 0}])
     return alignedData
 
 def getPointRelPos(dataPoint, coordLoc1, coordLoc2):
     utmLoc1 = utm.from_latlon(coordLoc1[0], coordLoc1[1])
     utmLoc2 = utm.from_latlon(coordLoc2[0], coordLoc2[1])
-    pointX = dataPoint[1]["easting"]
-    pointY = dataPoint[1]["northing"]
+    pointX = dataPoint[1]["Easting"]
+    pointY = dataPoint[1]["Northing"]
 
     refdx = (utmLoc1[0] - utmLoc2[0])
     refdy = (utmLoc1[1] - utmLoc2[1])

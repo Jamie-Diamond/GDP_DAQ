@@ -2,6 +2,7 @@ import sys
 #import windDataTools
 
 def sensor_log_read(input):
+    '''Reads data csv file form sensor_log and exports as lists'''
     import csv
     import json
     import time
@@ -65,11 +66,11 @@ def sensor_log_read(input):
                   ))
 
     print('\r\n{:,.0f} lines read in: {:,.3f}s'.format(row_count, time.time() - t0))
-
     return Magnetic, Gyro, GPS, Accel, Lin_Accel
 
 
 def data_save(Mag, Gyro, GPS, Accel, Lin_Accel, file='saved'):
+    '''Takes list of data and saves to log txts in order to save time proccesing data'''
     print('Saving Data to File')
     file += '_'
     file1 = file + 'mag.txt'
@@ -111,6 +112,7 @@ def data_save(Mag, Gyro, GPS, Accel, Lin_Accel, file='saved'):
 
 
 def data_read(file='saved'):
+    '''Reads data from saved log files created from data_save and saves as lists'''
     import json
     import csv
     import ast
@@ -140,6 +142,7 @@ def data_read(file='saved'):
 
 
 def freq_out(data):
+    '''Returns recording frequency of data inputted'''
     from statistics import mean
     gap = []
     if len(data) < 501:
@@ -154,6 +157,7 @@ def freq_out(data):
 
 
 def GPS_Data_Tidy(GPS):
+    '''Procceses GPS data into correct format'''
     print('Proccesing GPS data')
     import utm
     new_GPS = []
@@ -175,6 +179,7 @@ def GPS_Data_Tidy(GPS):
 
 
 def Mag_Data_Tidy(Mag):
+    '''Procceses mag data into correct format'''
     print('Proccesing mag data')
     import math
     new_mag = []
@@ -190,6 +195,7 @@ def Mag_Data_Tidy(Mag):
 
 
 def XYZ_plot(data, mag=False):
+    ''' takes data in standard format and plots XYZ on same graph against time, if mag True plots magnitude of XYZ'''
     import matplotlib.pyplot as plt
     time, x, y, z, mag = [], [], [], [], []
     for i in data:
@@ -211,6 +217,7 @@ def XYZ_plot(data, mag=False):
 
 
 def Y_plot(data, idx=1):
+    ''' just plots one series of data, depending on what idx '''
     import matplotlib.pyplot as plt
     time, y = [], []
     for i in data:
@@ -225,6 +232,7 @@ def Y_plot(data, idx=1):
 
 
 def Mag_plot(data):
+    '''PLots magnetic data'''
     import matplotlib.pyplot as plt
     time, phi = [], []
     for i in data:
@@ -239,6 +247,7 @@ def Mag_plot(data):
 
 
 def GPS_plot(data):
+    '''Plots GPS data'''
     import matplotlib.pyplot as plt
     time, north, east, acc = [], [], [], []
     for i in data:
@@ -258,6 +267,7 @@ def GPS_plot(data):
 
 
 def GPS_speed_plot(data):
+    '''plots speed point 2 point and 7pt moving average'''
     speeds = []
     times = []
     time = []
@@ -285,27 +295,8 @@ def GPS_speed_plot(data):
     print('Max Speed (RAW)=', max(speeds), 'knts')
     print('Max Speed (7pt moving ave)=', max(speed_ave), 'knts')
 
-
-# def integrator(y, time):
-#     import matplotlib.pyplot as plt
-#     from scipy import integrate
-#     import numpy as np
-#     plt.subplot(2, 1, 1)
-#     plt.plot(Time, y)
-#     yint = integrate.cumtrapz(y, time, initial=0)
-#     yint = np.ndarray.tolist(yint)
-#     plt.subplot(2, 1, 2)
-#     plt.plot(time, yint)
-#     plt.show()
-#     return yint
-    # print('Max Speed (RAW)=', max(speeds), 'knts')
-    mxspd = round(max(speed_ave),2)
-    print('Max Speed (7 second average)=', mxspd, 'knts')
-    speed_ave = movingaverage(speeds, 15)
-    mxspd = round(max(speed_ave), 2)
-    print('Max Speed (15 second average)=', mxspd, 'knts')
-
 def integrator(y, time):
+    ''' integrate y data with respect to time return Y_int'''
     import matplotlib.pyplot as plt
     from scipy import integrate
     import numpy as np
@@ -320,6 +311,7 @@ def integrator(y, time):
 
 
 def movingaverage(interval, window_size):
+    '''moving average function'''
     import numpy
     window = numpy.ones(int(window_size)) / float(window_size)
     temp = numpy.convolve(interval, window, 'same')

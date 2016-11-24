@@ -38,13 +38,13 @@ def sensor_log_read(input):
                 Lin_Accel.append([float(b[3]) / 1000, json.loads(b[2])])
             i += 1
             if i > levelCheck:
-                sys.stdout.write("\rProcessed Line: {:,.0f} of {:,.0f}."
+                sys.stdout.write("\rProcessed Line: {:,.0f} of {:,.0f}. {:,.0f}%"
                                  "\t\tGPS: {:,.0f} | "
                                  "Mag: {:,.0f} | "
                                  "Gyro: {:,.0f} | "
                                  "Accelerometer: {:,.0f} | "
                                  "Linear-Acc: {:,.0f}"
-                                 .format(i, row_count, len(GPS), len(Magnetic), len(Gyro), len(Accel), len(Lin_Accel)))
+                                 .format(i, row_count, (i/row_count)*100, len(GPS), len(Magnetic), len(Gyro), len(Accel), len(Lin_Accel)))
                 sys.stdout.flush()
                 levelCheck += 0.001 * row_count
 
@@ -65,7 +65,7 @@ def sensor_log_read(input):
                   len(Lin_Accel), freq_out(Lin_Accel),
                   ))
 
-    print('\r\n{:,.0f} lines read in: {:,.3f}s'.format(row_count, time.time() - t0))
+    print('\r\n{:,.0f} lines read in: {:,.3f}s\r\n'.format(row_count, time.time() - t0))
     return Magnetic, Gyro, GPS, Accel, Lin_Accel
 
 
@@ -361,5 +361,5 @@ Mag, Gyro, GPS, Accel, Lin_Accel = (None,)*5
 #     GPS_speed_plot(garminGPS)
 #     plt.show()
 
-Mag, Gyro, GPS, Accel, Lin_Accel = sensor_log_read('log.txt')
+#Mag, Gyro, GPS, Accel, Lin_Accel = sensor_log_read('log.txt')
 #windDataTools.getWindData(GPS)

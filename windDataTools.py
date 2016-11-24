@@ -1,6 +1,6 @@
 import urllib.request
 import datetime
-
+import sys
 import matplotlib.pyplot
 import numpy
 import utm
@@ -74,10 +74,18 @@ def alignGPSTimeAndWindData(GPS, rawWind):
                 }])
                 found = 1
         if found == 0:
+            nearestTimeStamp = None
+            for j in rawWind:
+                if nearestTimeStamp == None:
+                    nearestTimeStamp = j
+                elif abs(i[0] - j[0]) < abs(i[0] - nearestTimeStamp[0]):
+                    nearestTimeStamp = j
+
             alignedData.append([timeStamp, {
-                "Wind Speed": 0,
-                "Wind Dir": 0,
-                "Wind Gust": 0}])
+                "Wind Speed": nearestTimeStamp[2],
+                "Wind Dir": nearestTimeStamp[3],
+                "Wind Gust": nearestTimeStamp[4]
+            }])
     return alignedData
 
 def getPointRelPos(dataPoint, coordLoc1, coordLoc2):
@@ -131,25 +139,38 @@ def getWindData(GPS):
     sotonAlignedData = alignGPSTimeAndWindData(GPS, sotonWindData)
     brambleAlignedData = alignGPSTimeAndWindData(GPS, brambleWindData)
 
-    interpolatedData = []
+    interpolatedDataPoint = []
+
+    count = 1
 
     for i in numpy.linspace(0, len(GPS)-1, num=len(GPS)):
         percX, percY = getPointRelPos(GPS[int(i)], sotonLatLong, brambleLatLong)
         percDiff = numpy.abs(100 * (percY - percX))
         percAve = (percX + percY) / 2
         if (percDiff < 1e-6):
-            interpolatedData.append(interpolateData(sotonAlignedData[int(i)], brambleAlignedData[int(i)], percAve))
+            interpolatedDataPoint = interpolateData(sotonAlignedData[int(i)], brambleAlignedData[int(i)], percAve)
+            GPS[int(i)][1]['Wind Speed'] = interpolatedDataPoint[1]['Wind Speed']
+            GPS[int(i)][1]['Wind Dir'] = interpolatedDataPoint[1]['Wind Dir']
+            GPS[int(i)][1]['Wind Gust'] = interpolatedDataPoint[1]['Wind Gust']
+
+            sys.stdout.write("\rGetting Wind Data: Processed GPS Point: {:,.0f} of {:,.0f}."
+                             .format(count, len(GPS)))
+            sys.stdout.flush()
         else:
             print("Error interpolating between reference points.")
             return False
+        count += 1
 
-    print("Soton data:")
-    for data in sotonAlignedData[:10]:
-        print(data)
-    print("Bramble data: ")
-    for data in brambleAlignedData[:10]:
-        print(data)
-    print("Interpolated data: ")
-    for data in interpolatedData[:10]:
-        print(data)
-    return True
+    print('\r\nComplete.\r\n')
+
+    # print("Soton data:")
+    # for data in sotonAlignedData[:10]:
+    #     print(data)
+    # print("Bramble data: ")
+    # for data in brambleAlignedData[:10]:
+    #     print(data)
+    # print("Interpolated data: ")
+    # for data in interpolatedData[:10]:
+    #     print(data)
+
+    return GPS

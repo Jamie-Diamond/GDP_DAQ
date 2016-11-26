@@ -1,8 +1,29 @@
 from math import sqrt
-from math import atan
+from math import atan2
 
 import sys
 
+
+def bisect(target, dataList):
+    length = len(dataList)
+    correctedIndex = int(length / 2)
+    correctionFactor = int(length / 2)
+
+    iterations = 0
+
+    while correctionFactor > 1:
+
+        iterations += 1
+        correctionFactor = int(correctionFactor / 2)
+
+        if dataList[correctedIndex][0] > target:
+            correctedIndex -= correctionFactor
+        elif dataList[correctedIndex][0] < target:
+            correctedIndex += correctionFactor
+        elif dataList[correctedIndex][0] == target:
+            return dataList[correctedIndex], iterations
+
+    return dataList[correctedIndex], iterations
 
 def addSpeedAndDirToGPS(GPS, Mag):
     index = 0
@@ -10,8 +31,8 @@ def addSpeedAndDirToGPS(GPS, Mag):
     utmNew = None
     for i in GPS:
         if index == 0:
-            i[1]["Speed"] = None
-            i[1]["Direction"] = None
+            i[1]["Speed"] = 0
+            i[1]["Heading"] = 0
             utmOld = [i[1]["Easting"], i[1]["Northing"]]
             tOld = i[0]
         else:
@@ -22,19 +43,10 @@ def addSpeedAndDirToGPS(GPS, Mag):
             ds = sqrt((utmNew[0] - utmOld[0]) ** 2 + (utmNew[1] - utmOld[1]) ** 2)
             Speed = (ds / dt) / 0.5144
 
-            try:
-                GPSDirection = atan((utmNew[0] - utmOld[0]) / (utmNew[1] - utmOld[1]))
-            except ZeroDivisionError:
-                GPSDirection = 90
+            GPSDirection = atan2((utmNew[0] - utmOld[0]) , (utmNew[1] - utmOld[1]))
 
-            nearestTimeStamp = None
 
-            for j in Mag:
-                if nearestTimeStamp == None:
-                    nearestTimeStamp = j
-                elif abs(i[0] - j[0]) < abs(i[0] - nearestTimeStamp[0]):
-                    nearestTimeStamp = j
-
+            nearestTimeStamp, iterations = bisect(i[0], Mag)
             MagDirection = nearestTimeStamp[1]
 
             Direction = (GPSDirection + MagDirection) / 2
@@ -45,7 +57,7 @@ def addSpeedAndDirToGPS(GPS, Mag):
                 Leeway = 360 - Leeway
 
             GPS[index][1]["Speed"] = Speed
-            GPS[index][1]["Direction"] = Direction
+            GPS[index][1]["Heading"] = Direction
             GPS[index][1]["Leeway"] = Leeway
 
             utmOld = [i[1]["Easting"], i[1]["Northing"]]

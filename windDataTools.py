@@ -45,9 +45,15 @@ def createurl(website, timeStamp):
 
 def convertTimeStamp(timeStamp):
     fromStamp = datetime.datetime.fromtimestamp(timeStamp)
-    return str(roundNo(fromStamp.strftime('%M'))), \
+    if roundNo(fromStamp.strftime('%M')) == 60:
+        rmin = '00'
+        hour = str(int(fromStamp.strftime('%H')) + 1)
+    else:
+        rmin = str(roundNo(fromStamp.strftime('%M')))
+        hour = fromStamp.strftime('%H')
+    return rmin, \
            fromStamp.strftime('%M'), \
-           fromStamp.strftime('%H'), \
+           hour, \
            fromStamp.strftime('%d'), \
            fromStamp.strftime('%b'), \
            fromStamp.strftime('%B'), \
@@ -61,10 +67,11 @@ def roundNo(x, base=5):
 def alignGPSTimeAndWindData(GPS, rawWind):
     alignedData = []
     for i in GPS:
-        found = 0
+        found = False
         timeStamp = i[0]
         rmin, min, hour, day, sMonth, lMonth, year = convertTimeStamp(timeStamp)
         time = "%02d:%02d" % (int(hour), int(rmin))
+        #print(time)
         for j in rawWind:
             if j[1] == time:
                 alignedData.append([timeStamp, {
@@ -72,20 +79,11 @@ def alignGPSTimeAndWindData(GPS, rawWind):
                     "Wind Dir": j[3],
                     "Wind Gust": j[4]
                 }])
-                found = 1
-        if found == 0:
-            nearestTimeStamp = None
-            for j in rawWind:
-                if nearestTimeStamp == None:
-                    nearestTimeStamp = j
-                elif abs(i[0] - j[0]) < abs(i[0] - nearestTimeStamp[0]):
-                    nearestTimeStamp = j
+                found = True
+                break
+        if not found:
+            print(time + " for " + str(i) + " not found. ")
 
-            alignedData.append([timeStamp, {
-                "Wind Speed": nearestTimeStamp[2],
-                "Wind Dir": nearestTimeStamp[3],
-                "Wind Gust": nearestTimeStamp[4]
-            }])
     return alignedData
 
 def getPointRelPos(dataPoint, coordLoc1, coordLoc2):
@@ -142,18 +140,22 @@ def getWindData(GPS):
     interpolatedDataPoint = []
 
     count = 1
+    print("")
 
-    for i in numpy.linspace(0, len(GPS)-1, num=len(GPS)):
+    for i in numpy.linspace(0, len(GPS)-1, num=(len(GPS))):
         percX, percY = getPointRelPos(GPS[int(i)], sotonLatLong, brambleLatLong)
         percDiff = numpy.abs(100 * (percY - percX))
         percAve = (percX + percY) / 2
         if (percDiff < 1e-6):
-            interpolatedDataPoint = interpolateData(sotonAlignedData[int(i)], brambleAlignedData[int(i)], percAve)
-            GPS[int(i)][1]['Wind Speed'] = interpolatedDataPoint[1]['Wind Speed']
-            GPS[int(i)][1]['Wind Dir'] = interpolatedDataPoint[1]['Wind Dir']
-            GPS[int(i)][1]['Wind Gust'] = interpolatedDataPoint[1]['Wind Gust']
+            try:
+                interpolatedDataPoint = interpolateData(sotonAlignedData[int(i)], brambleAlignedData[int(i)], percAve)
+                GPS[int(i)][1]['Wind Speed'] = interpolatedDataPoint[1]['Wind Speed']
+                GPS[int(i)][1]['Wind Dir'] = interpolatedDataPoint[1]['Wind Dir']
+                GPS[int(i)][1]['Wind Gust'] = interpolatedDataPoint[1]['Wind Gust']
+            except IndexError:
+                print("Index " + str(i) + " not found in [soton: " + str(len(sotonAlignedData)) + "] or [bramble: " + str(len(sotonAlignedData)) + "]")
 
-            sys.stdout.write("\rGetting Wind Data: Processed GPS Point: {:,.0f} of {:,.0f}."
+            sys.stdout.write("\rGetting Wind Data: Processed GPS Point: {:,.0f} of {:,.0f}. "
                              .format(count, len(GPS)))
             sys.stdout.flush()
         else:

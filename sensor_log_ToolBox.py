@@ -8,7 +8,7 @@ def sensor_log_read(input):
     import time
     t0 = time.time()
     with open(input) as csvfile:
-        print('Opened: ' + input)
+        print('Opening: ' + input + ' ...')
         next(csvfile)  # skip headings
         csvobj = csv.reader(csvfile, delimiter='\n')
         Magnetic = []
@@ -48,6 +48,15 @@ def sensor_log_read(input):
                 sys.stdout.flush()
                 levelCheck += 0.001 * row_count
 
+    sys.stdout.write("\rProcessed Line: {:,.0f} of {:,.0f}. {:,.0f}%"
+                     "\t\tGPS: {:,.0f} | "
+                     "Mag: {:,.0f} | "
+                     "Gyro: {:,.0f} | "
+                     "Accelerometer: {:,.0f} | "
+                     "Linear-Acc: {:,.0f}"
+                     .format(i, row_count, (i / row_count) * 100, len(GPS), len(Magnetic), len(Gyro), len(Accel),
+                             len(Lin_Accel)))
+    sys.stdout.flush()
     print("\r\n")
     GPS = GPS_Data_Tidy(GPS)
     Magnetic = Mag_Data_Tidy(Magnetic)

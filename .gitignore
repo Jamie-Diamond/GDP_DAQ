@@ -51,3 +51,6 @@ Garmin_TestSail_1.gpx
 
 .idea/misc.xml
 .idea/workspace.xml
+__pycache__/boatHeadingTools.cpython-35.pyc
+__pycache__/sensor_log_ToolBox.cpython-35.pyc
+__pycache__/windDataTools.cpython-35.pyc

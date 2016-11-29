@@ -5,9 +5,6 @@ from math import cos
 import sys
 import matplotlib.pyplot
 
-
-
-
 def addApparentWind(GPSWindHead):
     index = 0
     for i in GPSWindHead:
@@ -17,7 +14,7 @@ def addApparentWind(GPSWindHead):
             i[1]['TWA'] = None
         else:
             try:
-                i[1]['TWA'] = i[1]['Heading'] - i[1]['Wind Dir']
+                i[1]['TWA'] = i[1]['HDG'] - i[1]['GWD']
                 i[1]['AWA'] = None ####################### Add Equation here ########################
                 i[1]['AWS'] = None#i[1]['Wind Speed']*cos(i[1]['App Wind Dir'])
             except KeyError:
@@ -32,28 +29,44 @@ def addApparentWind(GPSWindHead):
     print('\r\nComplete.\r\n')
     return GPSWindHead
 
-def linar_var_plot(Data, key='Speed',windSpeed=15, error=15):
+def polarFilter(Data, angleRange):
+    index = 0;
+    polarPoints = []
+    for i in Data:
+        if index > 3 and index < len(Data) - 2:
+            if abs(i[1]["HDG"] - Data[index - 2][1]["HDG"]) < angleRange \
+            and abs(i[1]["HDG"] - Data[index - 1][1]["HDG"]) < angleRange \
+            and abs(i[1]["HDG"] - Data[index + 1][1]["HDG"]) < angleRange \
+            and abs(i[1]["HDG"] - Data[index + 2][1]["HDG"]) < angleRange:
+                print(abs(i[1]["HDG"] - Data[index - 2][1]["HDG"]), abs(i[1]["HDG"] - Data[index - 1][1]["HDG"]), abs(i[1]["HDG"] - Data[index + 1][1]["HDG"]), abs(i[1]["HDG"] - Data[index + 2][1]["HDG"]))
+                polarPoints.append(i)
+
+        index += 1
+
+    return polarPoints
+
+def linar_var_plot(Data, key='SOG',windSpeed=15, error=15):
     var = []
     time = []
     for i in Data:
-        if i[1]["Wind Speed"] != None:
-            temp = abs(i[1]["Wind Speed"] - windSpeed)
+        if i[1]["GWS"] is not None:
+            temp = abs(i[1]["GWS"] - windSpeed)
             if temp < error:
                 var.append(i[1][key])
                 time.append(i[0])
     matplotlib.pyplot.plot(time, var,'x')
-    #matplotlib.pyplot.show()
+    matplotlib.pyplot.show()
 
 
 def plotPolars(Data, windSpeed=15, error=15):
     theta = []
     r = []
     for i in Data:
-        if i[1]["Wind Speed"] != None:
-            var = abs(i[1]["Wind Speed"] - windSpeed)
+        if i[1]["GWS"] is not None:
+            var = abs(i[1]["GWS"] - windSpeed)
             if var < error:
                 theta.append(i[1]["TWA"])
-                r.append(i[1]["Speed"])
+                r.append(i[1]["SOG"])
 
     axis = matplotlib.pyplot.subplot(111, projection='polar')
     axis.set_theta_zero_location('N')
@@ -72,8 +85,6 @@ GPSWindHead = addSpeedAndDirToGPS(GPSWind, Mag)
 
 
 GPSWindAHead = addApparentWind(GPSWindHead)
-linar_var_plot(GPSWindAHead,'TWA', 13, 1)
+#linar_var_plot(GPSWindAHead,'TWA', 13, 1)
 matplotlib.pyplot.figure(2)
-plotPolars(GPSWindAHead, 13, 1)
-
-
+plotPolars(polarFilter(GPSWindAHead, 0.025), 13, 1)

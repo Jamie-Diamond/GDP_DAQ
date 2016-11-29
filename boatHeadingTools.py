@@ -31,8 +31,8 @@ def addSpeedAndDirToGPS(GPS, Mag):
     utmNew = None
     for i in GPS:
         if index == 0:
-            i[1]["Speed"] = 0
-            i[1]["Heading"] = 0
+            i[1]["SOG"] = 0
+            i[1]["HDG"] = 0
             utmOld = [i[1]["Easting"], i[1]["Northing"]]
             tOld = i[0]
         else:
@@ -56,9 +56,9 @@ def addSpeedAndDirToGPS(GPS, Mag):
             if Leeway > 180:
                 Leeway = 360 - Leeway
 
-            GPS[index][1]["Speed"] = Speed
-            GPS[index][1]["Heading"] = Direction
-            GPS[index][1]["Leeway"] = Leeway
+            GPS[index][1]["SOG"] = Speed
+            GPS[index][1]["HDG"] = Direction
+            GPS[index][1]["LWY"] = Leeway
 
             utmOld = [i[1]["Easting"], i[1]["Northing"]]
             tOld = i[0]

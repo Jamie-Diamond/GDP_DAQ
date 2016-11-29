@@ -75,9 +75,9 @@ def alignGPSTimeAndWindData(GPS, rawWind):
         for j in rawWind:
             if j[1] == time:
                 alignedData.append([timeStamp, {
-                    "Wind Speed": j[2],
-                    "Wind Dir": j[3],
-                    "Wind Gust": j[4]
+                    "GWS": j[2],
+                    "GWD": j[3],
+                    "GWG": j[4]
                 }])
                 found = True
                 break
@@ -149,9 +149,9 @@ def getWindData(GPS):
         if (percDiff < 1e-6):
             try:
                 interpolatedDataPoint = interpolateData(sotonAlignedData[int(i)], brambleAlignedData[int(i)], percAve)
-                GPS[int(i)][1]['Wind Speed'] = interpolatedDataPoint[1]['Wind Speed']
-                GPS[int(i)][1]['Wind Dir'] = interpolatedDataPoint[1]['Wind Dir']
-                GPS[int(i)][1]['Wind Gust'] = interpolatedDataPoint[1]['Wind Gust']
+                GPS[int(i)][1]['GWS'] = interpolatedDataPoint[1]['GWS']
+                GPS[int(i)][1]['GWD'] = interpolatedDataPoint[1]['GWD']
+                GPS[int(i)][1]['GWG'] = interpolatedDataPoint[1]['GWG']
             except IndexError:
                 print("Index " + str(i) + " not found in [soton: " + str(len(sotonAlignedData)) + "] or [bramble: " + str(len(sotonAlignedData)) + "]")
 

@@ -129,17 +129,20 @@ def movingaverage(interval, window_size):
     return numpy.ndarray.tolist(temp)
 
 
-def linar_var_plot(Data, key='SOG',windSpeed=15, error=15):
+def linar_var_plot(Data, key=['SOG','COG'],GwindSpeed=15, Gerror=15):
     import matplotlib
-    var = []
-    time = []
-    for i in Data:
-        if i[1]["GWS"] is not None:
-            temp = abs(i[1]["GWS"] - windSpeed)
-            if temp < error:
-                var.append(i[1][key])
-                time.append(i[0])
-    matplotlib.pyplot.plot(time, var,'x')
+    if type(key) is not list:
+        key = [key]
+    for k in key:
+        var = []
+        time = []
+        for i in Data:
+            if i[1]["GWS"] is not None:
+                temp = abs(i[1]["GWS"] - GwindSpeed)
+                if temp < Gerror:
+                    var.append(i[1][k])
+                    time.append(i[0])
+        matplotlib.pyplot.plot(time, var,'.')
     matplotlib.pyplot.show()
 
 # to be moved to new file

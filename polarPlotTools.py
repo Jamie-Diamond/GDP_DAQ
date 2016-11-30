@@ -20,24 +20,28 @@ def polarFilter(Data, angleRange):
 
 
 def plotPolars(Data, windSpeed=15, error=15):
+    import math
     theta = []
     r = []
     for i in Data:
         if i[1]["GWS"] is not None:
             var = abs(i[1]["GWS"] - windSpeed)
             if var < error:
-                theta.append(i[1]["TWA"])
+                theta.append(math.radians(i[1]["TWA"]))
                 r.append(i[1]["SOG"])
-
+    print(theta)
+    print(max(theta))
+    print(min(theta))
     axis = matplotlib.pyplot.subplot(111, projection='polar')
     axis.set_theta_zero_location('N')
     axis.set_theta_direction(-1)
-    axis.set_rlabel_position(90)
+    axis.set_rlabel_position(math.pi/2)
     axis.plot(theta, r, '+b')
     axis.grid(True)
     axis.set_title("Boat Speed vs Wind Direction (Wind Speed: " + str(windSpeed) + "±" + str(error) + ")", va='bottom')
     matplotlib.pyplot.show()
 
 
-data = PP_data_import()
-plotPolars(polarFilter(data, 10), 13, 1)
+data = PP_data_import(reprocess=False)
+plotPolars(polarFilter(data, 5), 13, 10)
+linar_var_plot(data,['TWA'])

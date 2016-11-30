@@ -134,8 +134,7 @@ def Mag_Data_Tidy(Mag):
         time = i[0]
         ang = math.atan2(i[1][1], i[1][0])
         ang *= 180 / (math.pi)
-        if ang < 0:
-            ang += 360
+        ang = Wrapto0_360(ang)
         new_mag.append([time, ang])
     return new_mag
 
@@ -375,6 +374,17 @@ def addSpeedAndDirToGPS(GPS, Mag):
     return GPS
 
 
+def Wrapto0_360(x):
+    if x < 0:
+        x += 360
+    return x
+
+def Wrapto180(x):
+    x = Wrapto0_360(x)
+    if x > 180:
+        x = 360 - x
+    return x
+
 def addApparentWind(GPSWindHead):
     import sys
     index = 0
@@ -385,7 +395,7 @@ def addApparentWind(GPSWindHead):
             i[1]['TWA'] = None
         else:
             try:
-                i[1]['TWA'] = i[1]['HDG'] - i[1]['GWD']
+                i[1]['TWA'] = Wrapto180(i[1]['HDG'] - i[1]['GWD'])
                 i[1]['AWA'] = None ####################### Add Equation here ########################
                 i[1]['AWS'] = None#i[1]['Wind Speed']*cos(i[1]['App Wind Dir'])
             except KeyError:

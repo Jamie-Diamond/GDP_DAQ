@@ -154,8 +154,8 @@ def data_import(file='saved', log='log.txt'):
         print('Trying to import processed Data')
         Magnetic, Gyro, GPS, Accel, Lin_Accel = data_read(file)
         print('imported Proccesed Data')
-    except NameError:
-        print('Importing of processed data failed, importing raw log')
+    except (FileNotFoundError, NameError):
+        print('Importing of processed data FAILED, importing raw log')
         Magnetic, Gyro, GPS, Accel, Lin_Accel = sensor_log_read(log)
         print('Saving raw log file for future use')
         data_save(Magnetic, Gyro, GPS, Accel, Lin_Accel, file)

@@ -1,9 +1,10 @@
-from sensor_log_ToolBox import data_import
+from sensor_log_ToolBox import data_import, Mag_plot
 from windDataTools import getWindData
 from boatHeadingTools import addSpeedAndDirToGPS
 from math import cos
 import sys
 import matplotlib.pyplot
+
 
 def addApparentWind(GPSWindHead):
     index = 0
@@ -29,8 +30,9 @@ def addApparentWind(GPSWindHead):
     print('\r\nComplete.\r\n')
     return GPSWindHead
 
+
 def polarFilter(Data, angleRange):
-    index = 0;
+    index = 0
     polarPoints = []
     for i in Data:
         if index > 3 and index < len(Data) - 2:
@@ -44,6 +46,7 @@ def polarFilter(Data, angleRange):
         index += 1
 
     return polarPoints
+
 
 def linar_var_plot(Data, key='SOG',windSpeed=15, error=15):
     var = []
@@ -84,6 +87,6 @@ GPSWindHead = addSpeedAndDirToGPS(GPSWind, Mag)
 
 
 GPSWindAHead = addApparentWind(GPSWindHead)
-#linar_var_plot(GPSWindAHead,'TWA', 13, 1)
+linar_var_plot(GPSWindAHead,'HDG')
 matplotlib.pyplot.figure(2)
-plotPolars(polarFilter(GPSWindAHead, 0.3), 13, 1)
+plotPolars(polarFilter(GPSWindAHead, 0.05), 13, 1)

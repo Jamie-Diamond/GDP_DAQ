@@ -10,19 +10,18 @@ def bisect(target, dataList):
     correctionFactor = int(length / 2)
 
     iterations = 0
-
     while correctionFactor > 1:
 
         iterations += 1
         correctionFactor = int(correctionFactor / 2)
-
         if dataList[correctedIndex][0] > target:
             correctedIndex -= correctionFactor
         elif dataList[correctedIndex][0] < target:
             correctedIndex += correctionFactor
         elif dataList[correctedIndex][0] == target:
             return dataList[correctedIndex], iterations
-
+    import warnings
+    warnings.warn('No match found in bisect method')
     return dataList[correctedIndex], iterations
 
 def addSpeedAndDirToGPS(GPS, Mag):
@@ -49,15 +48,17 @@ def addSpeedAndDirToGPS(GPS, Mag):
             nearestTimeStamp, iterations = bisect(i[0], Mag)
             MagDirection = nearestTimeStamp[1]
 
-            Direction = (GPSDirection + MagDirection) / 2
+            #Direction = (GPSDirection + MagDirection) / 2
+            #COW = COG-TIDE
 
             Leeway = abs(GPSDirection - MagDirection)
 
             if Leeway > 180:
                 Leeway = 360 - Leeway
 
+            GPS[index][1]["COG"] = GPSDirection
             GPS[index][1]["SOG"] = Speed
-            GPS[index][1]["HDG"] = Direction
+            GPS[index][1]["HDG"] = MagDirection
             GPS[index][1]["LWY"] = Leeway
 
             utmOld = [i[1]["Easting"], i[1]["Northing"]]

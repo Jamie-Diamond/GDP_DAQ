@@ -20,10 +20,9 @@ def sensor_log_read(input):
         levelCheck = 0.0
         i = 0
         for a in csvobj:
-
             if 'Magnetic' in a[0]:
                 b = a[0].split("|")
-                Magnetic.append([float(b[3]), json.loads(b[2])])
+                Magnetic.append([float(b[3]) / 1000, json.loads(b[2])])
             if 'Gyro' in a[0]:
                 b = a[0].split("|")
                 Gyro.append([float(b[3]) / 1000, json.loads(b[2])])
@@ -208,10 +207,9 @@ def Mag_Data_Tidy(Mag):
     for i in Mag:
         time = i[0]
         ang = math.atan2(i[1][1], i[1][0])
-        ang *= 180 / (2 * math.pi)
+        ang *= 180 / (math.pi)
         if ang < 0:
-            ang += 180
-            None
+            ang += 360
         new_mag.append([time, ang])
     return new_mag
 
@@ -317,6 +315,7 @@ def GPS_speed_plot(data):
     print('Max Speed (RAW)=', max(speeds), 'knts')
     print('Max Speed (7pt moving ave)=', max(speed_ave), 'knts')
 
+
 def integrator(y, time):
     ''' integrate y data with respect to time return Y_int'''
     import matplotlib.pyplot as plt
@@ -338,8 +337,6 @@ def movingaverage(interval, window_size):
     window = numpy.ones(int(window_size)) / float(window_size)
     temp = numpy.convolve(interval, window, 'same')
     return numpy.ndarray.tolist(temp)
-
-
 
 
 # to be moved to new file

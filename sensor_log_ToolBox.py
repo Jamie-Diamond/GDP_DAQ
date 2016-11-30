@@ -47,7 +47,6 @@ def sensor_log_read(input):
                                  .format(i, row_count, (i/row_count)*100, len(GPS), len(Magnetic), len(Gyro), len(Accel), len(Lin_Accel)))
                 sys.stdout.flush()
                 levelCheck += 0.001 * row_count
-
     sys.stdout.write("\rProcessed Line: {:,.0f} of {:,.0f}. {:,.0f}%"
                      "\t\tGPS: {:,.0f} | "
                      "Mag: {:,.0f} | "
@@ -148,6 +147,20 @@ def data_read(file='saved'):
             Accel.append(json.loads(i))
     print('Data read from:', file, '_____.txt')
     return Mag, Gyro, GPS, Accel, Lin_Accel
+
+
+def data_import(file='saved', log='log.txt'):
+    try:
+        print('Trying to import processed Data')
+        Magnetic, Gyro, GPS, Accel, Lin_Accel = data_read(file)
+        print('imported Proccesed Data')
+    except NameError:
+        print('Importing of processed data failed, importing raw log')
+        Magnetic, Gyro, GPS, Accel, Lin_Accel = sensor_log_read(log)
+        print('Saving raw log file for future use')
+        data_save(Magnetic, Gyro, GPS, Accel, Lin_Accel, file)
+    print('Returning processed data')
+    return Magnetic, Gyro, GPS, Accel, Lin_Accel
 
 
 def freq_out(data):
@@ -325,6 +338,9 @@ def movingaverage(interval, window_size):
     window = numpy.ones(int(window_size)) / float(window_size)
     temp = numpy.convolve(interval, window, 'same')
     return numpy.ndarray.tolist(temp)
+
+
+
 
 # to be moved to new file
 # def getUserRequirement():

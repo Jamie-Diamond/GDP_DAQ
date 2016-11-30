@@ -39,9 +39,14 @@ def Mag_plot(data):
     '''PLots magnetic data'''
     import matplotlib.pyplot as plt
     time, phi = [], []
-    for i in data:
-        time.append(i[0])
-        phi.append(i[1])
+    try:
+        for i in data:
+            time.append(i[0])
+            phi.append(i[1]['HDG'])
+    except KeyError:
+        for i in data:
+            time.append(i[0])
+            phi.append(i[1])
     plt.plot(time, phi, 'rx', label='phi')
     plt.legend()
     plt.xlabel("UnixTime stamp [s]")
@@ -68,6 +73,7 @@ def GPS_plot(data):
     plt.ylabel("North [m]")
     plt.grid(True)
     plt.axis('equal')
+    plt.show()
 
 
 def GPS_speed_plot(data):

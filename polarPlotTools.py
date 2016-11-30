@@ -40,4 +40,4 @@ def plotPolars(Data, windSpeed=15, error=15):
 
 
 data = PP_data_import()
-plotPolars(polarFilter(data, 0.05), 13, 1)
+plotPolars(polarFilter(data, 10), 13, 1)

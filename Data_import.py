@@ -1,4 +1,4 @@
-def sensor_log_read(input):
+def sensor_log_read(input='log.txt', t_offset=-4789.56):
     '''Reads data csv file form sensor_log and exports as lists'''
     import csv
     import json
@@ -6,7 +6,7 @@ def sensor_log_read(input):
     import sys
     t0 = time.time()
     with open(input) as csvfile:
-        print('Opening: ' + input + ' ...')
+        print('Opening: ' + input)
         next(csvfile)  # skip headings
         csvobj = csv.reader(csvfile, delimiter='\n')
         Magnetic = []
@@ -20,19 +20,19 @@ def sensor_log_read(input):
         for a in csvobj:
             if 'Magnetic' in a[0]:
                 b = a[0].split("|")
-                Magnetic.append([float(b[3]) / 1000, json.loads(b[2])])
+                Magnetic.append([(float(b[3]) / 1000)+t_offset, json.loads(b[2])])
             if 'Gyro' in a[0]:
                 b = a[0].split("|")
-                Gyro.append([float(b[3]) / 1000, json.loads(b[2])])
+                Gyro.append([(float(b[3]) / 1000)+t_offset, json.loads(b[2])])
             if 'GPS' in a[0]:
                 b = a[0].split("|")
-                GPS.append([float(b[3]) / 1000, json.loads(b[2])])
+                GPS.append([(float(b[3]) / 1000)+t_offset, json.loads(b[2])])
             if 'Acceleration' in a[0] and 'Linear' not in a[0]:
                 b = a[0].split("|")
-                Accel.append([int(b[3]) / 1000, json.loads(b[2])])
+                Accel.append([(float(b[3]) / 1000)+t_offset, json.loads(b[2])])
             if 'Linear Acceleration' in a[0]:
                 b = a[0].split("|")
-                Lin_Accel.append([float(b[3]) / 1000, json.loads(b[2])])
+                Lin_Accel.append([(float(b[3]) / 1000)+t_offset, json.loads(b[2])])
             i += 1
             if i > levelCheck:
                 sys.stdout.write("\rProcessed Line: {:,.0f} of {:,.0f}. {:,.0f}%"
@@ -422,7 +422,7 @@ def bisect(target, dataList):
     return dataList[correctedIndex], iterations
 
 
-def data_save(data, file='Dict_Save'):
+def data_save(data, file='Data_Save'):
     import json
     print('Saving Dictionary to File')
     file += '.json'
@@ -432,7 +432,7 @@ def data_save(data, file='Dict_Save'):
     return None
 
 
-def data_read(file = 'Dict_Save'):
+def data_read(file = 'Data_Save'):
     import json
     file += '.json'
     with open(file) as txt:
@@ -440,7 +440,7 @@ def data_read(file = 'Dict_Save'):
     return dat
 
 
-def PP_data_import(reprocess=False, file='Dict_Save', input='log.txt'):
+def PP_data_import(reprocess=False, file='Data_Save', input='log.txt'):
     try:
         if reprocess:
             print('Reprocess Requested')
@@ -455,8 +455,14 @@ def PP_data_import(reprocess=False, file='Dict_Save', input='log.txt'):
         data = addSpeedAndDirToGPS(data, Mag)
         data = addApparentWind(data)
         data_save(data)
-        print('-'*30 ,'\nSaving Processed Data For Future use as JSON \n','-'*30 )
+        print('-++'*30, '\nSaving Processed Data For Future use as', file, '.JSON \n', '-++'*30)
         return data
 
+
 if __name__ == "__main__":
-    data = PP_data_import()
+  data = PP_data_import()
+  from Plotting_ToolBox import Mag_plot
+  Mag_plot(data)
+
+
+

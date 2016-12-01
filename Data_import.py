@@ -472,7 +472,7 @@ def data_save(data, file='Data_Save'):
 def Add_Tide(data):
     for i in data:
         i[1]['TDS'] = 1.5
-        i[1]['TDD'] = 320
+        i[1]['TDD'] = 135
     return data
 
 
@@ -504,12 +504,20 @@ def PP_data_import(reprocess=False, file='Data_Save', input='log.txt'):
         return data
 
 
+def data_time_trim(data, tmin, tmax):
+    data2 = []
+    for i in data:
+        if i[0] < tmin or i[0] > tmax:
+            None
+        else:
+            data2.append(i)
+    return data2
+
 if __name__ == "__main__":
     data = PP_data_import(reprocess=False)
-    from Plotting_ToolBox import linar_var_plot
-    linar_var_plot(data, ['AWA', 'TWA'])
-    linar_var_plot(data, ['AWS', 'TWS'])
-    linar_var_plot(data, ['HDG', 'COW', 'COG', 'LWY'])
+    print(len(data))
+    data = data_time_trim(data, 1479048170, 1479048675)
+    print(len(data))
 
 
 

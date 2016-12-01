@@ -46,7 +46,8 @@ def plotPolars(Data, windSpeed=15, WindTol=15, anglerange=15, minspeed=5):
     matplotlib.pyplot.show()
 
 if __name__ == "__main__":
-    data = PP_data_import()
-    plotPolars(data, windSpeed=10, WindTol=1, anglerange=5, minspeed=6)
-    linar_var_plot(data, ['GWD', 'HDG', 'TWA', 'GWS'])
+    data = PP_data_import(reprocess=False)
+    plotPolars(data, windSpeed=12, WindTol=1.5, anglerange=5, minspeed=6)
+    linar_var_plot(data, ['GWD', 'TWD', 'COW', 'TWA'])
+    linar_var_plot(data, ['BSP', 'GWS', 'TWS', 'AWS'])
     print('Finito')

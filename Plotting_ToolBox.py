@@ -130,7 +130,7 @@ def movingaverage(interval, window_size):
 
 
 def linar_var_plot(Data, key=['SOG','COG'],GwindSpeed=15, Gerror=15):
-    import matplotlib
+    import matplotlib.pyplot
     if type(key) is not list:
         key = [key]
     for k in key:

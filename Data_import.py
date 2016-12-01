@@ -282,7 +282,7 @@ def getWindData(GPS):
     interpolatedDataPoint = []
 
     count = 1
-    print("")
+    print("\n")
 
     for i in numpy.linspace(0, len(GPS)-1, num=(len(GPS))):
         percX, percY = getPointRelPos(GPS[int(i)], sotonLatLong, brambleLatLong)
@@ -292,7 +292,8 @@ def getWindData(GPS):
             try:
                 interpolatedDataPoint = interpolateData(sotonAlignedData[int(i)], brambleAlignedData[int(i)], percAve)
                 GPS[int(i)][1]['GWS'] = interpolatedDataPoint[1]['GWS']
-                GPS[int(i)][1]['GWD'] = interpolatedDataPoint[1]['GWD']
+                #GPS[int(i)][1]['GWD'] = interpolatedDataPoint[1]['GWD']
+                GPS[int(i)][1]['GWD'] = 332
                 GPS[int(i)][1]['GWG'] = interpolatedDataPoint[1]['GWG']
             except IndexError:
                 print("Index " + str(i) + " not found in [soton: " + str(len(sotonAlignedData)) + "] or [bramble: " + str(len(sotonAlignedData)) + "]")
@@ -391,14 +392,27 @@ def addApparentWind(GPSWindHead):
     index = 0
     for i in GPSWindHead:
         if index == 0:
-            i[1]['AWA'] = None
-            i[1]['AWS'] = None
             i[1]['TWA'] = None
+            i[1]['COW'] = None
+            i[1]['BSP'] = None
+            i[1]['TWD'] = None
+            i[1]['TWS'] = None
+            i[1]['LWY'] = None
+            i[1]['HDG'] = None
+            i[1]['AWS'] = None
+            i[1]['AWA'] = None
         else:
             try:
-                i[1]['TWA'] = Wrapto180(i[1]['HDG'] - i[1]['GWD'])
-                i[1]['AWA'] = None ####################### Add Equation here ########################
-                i[1]['AWS'] = None#i[1]['Wind Speed']*cos(i[1]['App Wind Dir'])
+                X, Y= to_vector(i[1]['COG'], i[1]['SOG']); X1, Y1 = to_vector(i[1]['TDD'], i[1]['TDS'])
+                i[1]['COW'], i[1]['BSP'] = from_vector(X+X1, Y+Y1)
+                X, Y = to_vector(Wrapto0_360(i[1]['GWD']+180), i[1]['GWS']); X1, Y1 = to_vector(i[1]['TDD'], i[1]['TDS'])
+                temp, i[1]['TWS'] = from_vector(X + X1, Y + Y1)
+                i[1]['TWD'] = Wrapto0_360(temp - 180)
+                i[1]['TWA'] = Wrapto180(i[1]['HDG'] - i[1]['TWD'])
+                i[1]['LWY'] = Wrapto180(i[1]['HDG'] - i[1]['COW'])
+                X, Y = to_vector(Wrapto0_360(i[1]['TWD']+180), i[1]['TWS']); X1, Y1 = to_vector(i[1]['COW'], i[1]['BSP'])
+                temp, i[1]['AWS'] = from_vector(X + X1, Y + Y1)
+                i[1]['AWA'] = Wrapto180(temp+180)
             except KeyError:
                 print('Something not found in: ' + str(i))
 
@@ -411,6 +425,18 @@ def addApparentWind(GPSWindHead):
     print('\r\nComplete.\r\n')
     return GPSWindHead
 
+
+def to_vector(ang, stren):
+    from math import cos, sin, radians
+    Y = cos(radians(ang))*stren
+    X = sin(radians(ang))*stren
+    return X, Y
+
+def from_vector(X, Y):
+    from math import sqrt, atan2, degrees
+    stren = sqrt(X*X+Y*Y)
+    ang = Wrapto0_360(degrees(atan2(X, Y)))
+    return ang, stren
 
 def bisect(target, dataList):
     length = len(dataList)
@@ -443,6 +469,13 @@ def data_save(data, file='Data_Save'):
     return None
 
 
+def Add_Tide(data):
+    for i in data:
+        i[1]['TDS'] = 1.5
+        i[1]['TDD'] = 320
+    return data
+
+
 def data_read(file = 'Data_Save'):
     import json
     file += '.json'
@@ -464,6 +497,7 @@ def PP_data_import(reprocess=False, file='Data_Save', input='log.txt'):
         Mag, Gyro, GPS, Accel, Lin_Accel = sensor_log_read(input)
         data = getWindData(GPS)
         data = addSpeedAndDirToGPS(data, Mag)
+        data = Add_Tide(data)
         data = addApparentWind(data)
         data_save(data)
         print('-++'*30, '\nSaving Processed Data For Future use as', file, '.JSON \n', '-++'*30)
@@ -471,9 +505,12 @@ def PP_data_import(reprocess=False, file='Data_Save', input='log.txt'):
 
 
 if __name__ == "__main__":
-  data = PP_data_import()
-  from Plotting_ToolBox import Mag_plot
-  Mag_plot(data)
+    data = PP_data_import(reprocess=False)
+    from Plotting_ToolBox import linar_var_plot
+    linar_var_plot(data, ['AWA', 'TWA'])
+    linar_var_plot(data, ['AWS', 'TWS'])
+    linar_var_plot(data, ['HDG', 'COW', 'COG', 'LWY'])
+
 
 
 

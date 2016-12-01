@@ -41,7 +41,7 @@ def plotPolars(Data, windSpeed=15, error=15, anglerange=15):
     axis.set_title("SOG vs TWA (TWS: " + str(windSpeed) + " ± " + str(error) + '  HDG Filter: ± '+str(anglerange) + ")", va='bottom')
     matplotlib.pyplot.show()
 
-
-data = PP_data_import(reprocess=False)
-plotPolars(data, 10, 2, 4)
-linar_var_plot(data, ['COG', 'HDG', 'SOG'])
+if __name__ = "__main__"
+    data = PP_data_import(reprocess=False)
+    plotPolars(data, 10, 2, 4)
+    linar_var_plot(data, ['COG', 'HDG', 'SOG'])

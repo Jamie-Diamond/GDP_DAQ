@@ -144,6 +144,7 @@ def linar_var_plot(Data, key=['SOG','COG'],GwindSpeed=15, Gerror=15):
                     time.append(i[0])
         matplotlib.pyplot.plot(time, var,'.')
     matplotlib.pyplot.show()
+    print('linear var plot complete')
 
 # to be moved to new file
 # def getUserRequirement():

@@ -1,5 +1,5 @@
 from Data_import import PP_data_import
-from Plotting_ToolBox import linar_var_plot
+from Plotting_ToolBox import linar_var_plot, GPS_plot
 import matplotlib.pyplot
 
 
@@ -43,5 +43,5 @@ def plotPolars(Data, windSpeed=15, error=15, anglerange=15):
 
 
 data = PP_data_import(reprocess=False)
-plotPolars(data, 10, 56)
-linar_var_plot(data, ['GWS', 'GWD'])
+plotPolars(data, 10, 2, 4)
+linar_var_plot(data, ['COG', 'HDG', 'SOG'])

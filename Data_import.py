@@ -322,7 +322,7 @@ def getWindData(GPS):
 
 def addSpeedAndDirToGPS(GPS, Mag):
     from math import atan2
-    from math import sqrt
+    from math import sqrt, degrees
     import sys
     index = 0
     utmOld = None
@@ -330,7 +330,9 @@ def addSpeedAndDirToGPS(GPS, Mag):
     for i in GPS:
         if index == 0:
             i[1]["SOG"] = 0
+            i[1]["COG"] = 0
             i[1]["HDG"] = 0
+            i[1]["LWY"] = 0
             utmOld = [i[1]["Easting"], i[1]["Northing"]]
             tOld = i[0]
         else:
@@ -341,9 +343,7 @@ def addSpeedAndDirToGPS(GPS, Mag):
             ds = sqrt((utmNew[0] - utmOld[0]) ** 2 + (utmNew[1] - utmOld[1]) ** 2)
             Speed = (ds / dt) / 0.5144
 
-            GPSDirection = atan2((utmNew[0] - utmOld[0]) , (utmNew[1] - utmOld[1]))
-
-
+            GPSDirection = atan2((utmNew[0] - utmOld[0]), (utmNew[1] - utmOld[1]))
             nearestTimeStamp, iterations = bisect(i[0], Mag)
             MagDirection = nearestTimeStamp[1]
 
@@ -352,13 +352,10 @@ def addSpeedAndDirToGPS(GPS, Mag):
 
             Leeway = abs(GPSDirection - MagDirection)
 
-            if Leeway > 180:
-                Leeway = 360 - Leeway
-
-            GPS[index][1]["COG"] = GPSDirection
+            GPS[index][1]["COG"] = Wrapto0_360(degrees(GPSDirection))
             GPS[index][1]["SOG"] = Speed
-            GPS[index][1]["HDG"] = MagDirection
-            GPS[index][1]["LWY"] = Leeway
+            GPS[index][1]["HDG"] = Wrapto0_360(MagDirection + 180)
+            GPS[index][1]["LWY"] = Wrapto180(Leeway)
 
             utmOld = [i[1]["Easting"], i[1]["Northing"]]
             tOld = i[0]
@@ -377,13 +374,17 @@ def addSpeedAndDirToGPS(GPS, Mag):
 def Wrapto0_360(x):
     if x < 0:
         x += 360
+    if x > 360:
+        x -= 360
     return x
+
 
 def Wrapto180(x):
     x = Wrapto0_360(x)
     if x > 180:
         x = 360 - x
     return x
+
 
 def addApparentWind(GPSWindHead):
     import sys

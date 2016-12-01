@@ -20,28 +20,34 @@ def polarFilter(Data, angleRange):
     return polarPoints
 
 
-def plotPolars(Data, windSpeed=15, error=15, anglerange=15):
+def plotPolars(Data, windSpeed=15, WindTol=15, anglerange=15, minspeed=5):
     Data = polarFilter(Data, anglerange)
     import math
     theta = []
+    theta2 = []
+    ref = []
     r = []
     for i in Data:
         if i[1]["GWS"] is not None:
             var = abs(i[1]["GWS"] - windSpeed)
-            if var < error:
-                theta.append(math.radians(i[1]["TWA"]))
-                r.append(i[1]["SOG"])
+            if var < WindTol:
+                if i[1]["SOG"] > minspeed:
+                    theta.append(math.radians(i[1]["TWA"]))
+                    theta2.append(-math.radians(i[1]["TWA"]))
+                    r.append(i[1]["SOG"])
     axis = matplotlib.pyplot.subplot(111, projection='polar')
     axis.set_theta_zero_location('N')
     axis.set_theta_direction(-1)
     axis.set_rlabel_position(math.pi/2)
     axis.set_rlim(0, 18)
-    axis.plot(theta, r, '+b')
+    axis.plot(theta, r, '.b')
+    axis.plot(theta2, r, '.b')
     axis.grid(True)
-    axis.set_title("SOG vs TWA (TWS: " + str(windSpeed) + " ± " + str(error) + '  HDG Filter: ± '+str(anglerange) + ")", va='bottom')
+    axis.set_title("SOG vs TWA (TWS: " + str(windSpeed) + " ± " + str(WindTol) + '  HDG Filter: ± '+str(anglerange) + '  Min Speed =  '+str(minspeed) + ")", va='bottom')
     matplotlib.pyplot.show()
 
 if __name__ == "__main__":
     data = PP_data_import(reprocess=False)
-    plotPolars(data, 10, 2, 4)
-    linar_var_plot(data, ['COG', 'HDG', 'SOG'])
+    plotPolars(data, windSpeed=10, WindTol=1, anglerange=10, minspeed=7)
+    linar_var_plot(data, ['GWD', 'HDG', 'TWA'])
+    print('Finito')

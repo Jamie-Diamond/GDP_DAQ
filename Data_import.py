@@ -475,6 +475,20 @@ def Add_Tide(data):
         i[1]['TDD'] = 135
     return data
 
+def Add_Tide2(data, HT='10:00', R=4.2):
+    import csv
+    import utm
+    lists = []
+    with open('Tide_DB.csv') as csvfile:
+        reader = csv.reader(csvfile, delimiter=',')
+        for line in reader:
+            lists.append(line)
+    lists.pop(1); lists.pop(0)
+    for i in lists:
+        [Easting, Northing, _, _] = utm.from_latlon(float(i[0]), float(i[1]))
+        i[0] = Easting; i[1] = Northing
+
+
 
 def data_read(file = 'Data_Save'):
     import json
@@ -514,10 +528,8 @@ def data_time_trim(data, tmin, tmax):
     return data2
 
 if __name__ == "__main__":
-    data = PP_data_import(reprocess=False)
-    print(len(data))
-    data = data_time_trim(data, 1479048170, 1479048675)
-    print(len(data))
+    data = PP_data_import()
+    Add_Tide2(data)
 
 
 

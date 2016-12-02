@@ -45,9 +45,52 @@ def plotPolars(Data, windSpeed=15, WindTol=15, anglerange=15, minspeed=5):
     axis.set_title("BSP vs TWA (TWS: " + str(windSpeed) + " ± " + str(WindTol) + '  HDG Filter: ± '+str(anglerange) + '  Min Speed =  '+str(minspeed) + ")", va='bottom')
     matplotlib.pyplot.show()
 
+def plotAngleAveragedPolar(Data, windSpeed=15, WindTol=15, anglerange=15, minspeed=5, averange=0.5):
+    Data = polarFilter(Data, anglerange)
+    import math
+    from numpy import arange
+    from Data_import import roundNo, Wrapto180
+
+    r = []
+    theta = []
+    angles = {}
+    for i in arange(0, 180 + averange * 2, averange * 2):
+        angles[i] = []
+
+    for i in Data:
+        if i[1]["TWS"] is not None:
+            var = abs(i[1]["TWS"] - windSpeed)
+            if var < WindTol:
+                if i[1]["BSP"] > minspeed:
+                    roundedAngle = roundNo(Wrapto180(i[1]["TWA"]), averange*2)
+                    angles[roundedAngle].append(i[1]["BSP"])
+
+    for i in angles:
+        if len(angles[i]) != 0:
+            angles[i] = sum(angles[i]) / float(len(angles[i]))
+            theta.append(math.radians(i))
+            r.append(angles[i])
+        else:
+            angles[i] = None
+
+
+    print(angles)
+
+    axis = matplotlib.pyplot.subplot(111, projection='polar')
+    axis.set_theta_zero_location('N')
+    axis.set_theta_direction(-1)
+    axis.set_rlabel_position(math.pi / 2)
+    axis.set_rlim(0, 18)
+    axis.plot(theta, r, '.b')
+    axis.grid(True)
+    axis.set_title("BSP vs TWA (TWS: " + str(windSpeed) + "±" + str(WindTol) + ', HDG Filter: ±' + str(
+        anglerange) + ', Min Speed: ' + str(minspeed) + "" + ', Angle Mapping: ±' + str(averange) + ")", va='bottom')
+    matplotlib.pyplot.show()
+
+
 if __name__ == "__main__":
     data = PP_data_import(reprocess=False)
-    plotPolars(data, windSpeed=12, WindTol=1.5, anglerange=5, minspeed=6)
-    linar_var_plot(data, ['GWD', 'TWD', 'COW', 'TWA'])
-    linar_var_plot(data, ['BSP', 'GWS', 'TWS', 'AWS'])
+    plotAngleAveragedPolar(data, windSpeed=12, WindTol=1.5, anglerange=5, minspeed=6, averange=5)
+    linar_var_plot(data, ['GWD', 'TWD', 'COW', 'AWA'])
+    #linar_var_plot(data, ['BSP', 'GWS', 'TWS', 'AWS'])
     print('Finito')

@@ -242,19 +242,6 @@ def getPointRelPos(dataPoint, coordLoc1, coordLoc2):
     utmLoc1Mapped = [utmLoc1[0] + linedx, utmLoc1[1] + linedy]
     utmLoc2Mapped = [utmLoc2[0] + linedx, utmLoc2[1] + linedy]
 
-    # matplotlib.pyplot.plot(utmLoc1[0], utmLoc1[1], 'ro')
-    # matplotlib.pyplot.plot(utmLoc2[0], utmLoc2[1], 'go')
-    # matplotlib.pyplot.plot(pointX, pointY, 'b+')
-    #
-    # matplotlib.pyplot.plot(numpy.linspace(utmLoc1[0], utmLoc2[0], num=100), numpy.linspace(utmLoc1[0], utmLoc2[0], num=100) * m + refC, 'r')
-    # matplotlib.pyplot.plot(numpy.linspace(utmLoc1[0], utmLoc2[0], num=100), numpy.linspace(utmLoc1[0], utmLoc2[0], num=100) * m + datC, 'b')
-    # matplotlib.pyplot.plot([utmLoc2[0], utmLoc2[0]], [utmLoc2[1], utmLoc2[1]+dC], 'g')
-    # matplotlib.pyplot.plot([utmLoc1[0], utmLoc1[0] + linedx], [utmLoc1[1], utmLoc1[1]], 'g')
-    # matplotlib.pyplot.plot([utmLoc1[0] + linedx, utmLoc1[0] + linedx], [utmLoc1[1], utmLoc1[1] + linedy], 'g')
-    # matplotlib.pyplot.plot(utmLoc1Mapped[0], utmLoc1Mapped[1], 'r+')
-    # matplotlib.pyplot.plot(utmLoc2Mapped[0], utmLoc2Mapped[1], 'g+')
-    # matplotlib.pyplot.show()
-
     percX = (pointX - utmLoc2Mapped[0])/(utmLoc1Mapped[0] - utmLoc2Mapped[0])
     percY = (pointY - utmLoc2Mapped[1]) / (utmLoc1Mapped[1] - utmLoc2Mapped[1])
 
@@ -263,8 +250,18 @@ def getPointRelPos(dataPoint, coordLoc1, coordLoc2):
 
 def interpolateData(dataPoint1, dataPoint2, percAlongConnectingLine):
     interpolatedDataPoint = [dataPoint1[0], {}]
-    for i in dataPoint1[1]:
-        interpolatedDataPoint[1][i] = (float(dataPoint1[1][i]) - float(dataPoint2[1][i])) * percAlongConnectingLine + float(dataPoint2[1][i])
+    #for i in dataPoint1[1]:
+        #interpolatedDataPoint[1][i] = (float(dataPoint1[1][i]) - float(dataPoint2[1][i])) * percAlongConnectingLine + float(dataPoint2[1][i])
+    
+    #print(dataPoint1)
+    
+    X1, Y1 = to_vector(dataPoint1[1]["GWD"], dataPoint1[1]["GWS"])
+    X2, Y2 = to_vector(dataPoint1[1]["GWD"], dataPoint1[1]["GWS"])
+
+    X3 = (X1 - X2) * percAlongConnectingLine + X1
+    Y3 = (Y1 - Y2) * percAlongConnectingLine + Y1
+
+    interpolatedDataPoint[1]["GWD"], interpolatedDataPoint[1]["GWS"] = from_vector(X3, Y3)
     return interpolatedDataPoint
 
 
@@ -292,9 +289,7 @@ def getWindData(GPS):
             try:
                 interpolatedDataPoint = interpolateData(sotonAlignedData[int(i)], brambleAlignedData[int(i)], percAve)
                 GPS[int(i)][1]['GWS'] = interpolatedDataPoint[1]['GWS']
-                #GPS[int(i)][1]['GWD'] = interpolatedDataPoint[1]['GWD']
-                GPS[int(i)][1]['GWD'] = 332
-                GPS[int(i)][1]['GWG'] = interpolatedDataPoint[1]['GWG']
+                GPS[int(i)][1]['GWD'] = interpolatedDataPoint[1]['GWD']
             except IndexError:
                 print("Index " + str(i) + " not found in [soton: " + str(len(sotonAlignedData)) + "] or [bramble: " + str(len(sotonAlignedData)) + "]")
 
@@ -428,8 +423,8 @@ def addApparentWind(GPSWindHead):
 
 def to_vector(ang, stren):
     from math import cos, sin, radians
-    Y = cos(radians(ang))*stren
-    X = sin(radians(ang))*stren
+    Y = cos(radians(float(ang))) * float(stren)
+    X = sin(radians(float(ang))) * float(stren)
     return X, Y
 
 def from_vector(X, Y):
@@ -505,9 +500,10 @@ def PP_data_import(reprocess=False, file='Data_Save', input='log.txt'):
             raise FileNotFoundError
         else:
             data = data_read(file)
+            print('Saved Data Found \nStarting from Data_Save.json \n \n')
             return data
     except (NameError, FileNotFoundError):
-        print('No Processed Saved Data Found \n Starting from log.txt \n \n')
+        print('No Processed Saved Data Found \nStarting from log.txt \n \n')
         Mag, Gyro, GPS, Accel, Lin_Accel = sensor_log_read(input)
         data = getWindData(GPS)
         data = addSpeedAndDirToGPS(data, Mag)

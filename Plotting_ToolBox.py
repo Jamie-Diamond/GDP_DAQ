@@ -55,7 +55,7 @@ def Mag_plot(data):
     plt.show()
 
 
-def GPS_plot(data):
+def GPS_plot(data, pause=False):
     '''Plots GPS data'''
     import matplotlib.pyplot as plt
     time, north, east, acc = [], [], [], []
@@ -67,13 +67,16 @@ def GPS_plot(data):
             acc.append(0)
         east.append(i[1]['Easting'])
         north.append(i[1]['Northing'])
+    plt.figure(98)
     plt.errorbar(east, north, xerr=acc, yerr=acc, label='GPS', ecolor='b', color='k', marker='o')
     plt.legend()
     plt.xlabel("East [m]")
     plt.ylabel("North [m]")
     plt.grid(True)
     plt.axis('equal')
-    plt.show()
+    if type(pause) is float:
+        plt.pause(pause)
+        plt.gcf().clear()
 
 
 def GPS_speed_plot(data):
@@ -84,6 +87,7 @@ def GPS_speed_plot(data):
     east = []
     north = []
     import matplotlib.pyplot as plt
+    plt.figure(100)
     for i in data:
         time.append(i[0])
         east.append(i[1]['Easting'])
@@ -129,8 +133,9 @@ def movingaverage(interval, window_size):
     return numpy.ndarray.tolist(temp)
 
 
-def linar_var_plot(Data, key=['SOG','COG'],GwindSpeed=15, Gerror=15):
+def linar_var_plot(Data, key=['SOG', 'COG'],GwindSpeed=15, Gerror=15, pause=False):
     import matplotlib.pyplot
+    matplotlib.pyplot.figure(99)
     if type(key) is not list:
         key = [key]
     for k in key:
@@ -142,10 +147,12 @@ def linar_var_plot(Data, key=['SOG','COG'],GwindSpeed=15, Gerror=15):
                 if temp < Gerror:
                     var.append(i[1][k])
                     time.append(i[0])
-        matplotlib.pyplot.plot(time, var,'.', label=k)
+        matplotlib.pyplot.plot(time, var, '.', label=k)
         matplotlib.pyplot.legend()
-    matplotlib.pyplot.show()
-    print('linear var plot complete')
+    if type(pause) is float:
+        matplotlib.pyplot.plot.pause(pause)
+        matplotlib.pyplot.plot.gcf().clear()
+
 
 # to be moved to new file
 # def getUserRequirement():

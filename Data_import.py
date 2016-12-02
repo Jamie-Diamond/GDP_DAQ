@@ -327,7 +327,6 @@ def addSpeedAndDirToGPS(GPS, Mag):
             i[1]["SOG"] = 0
             i[1]["COG"] = 0
             i[1]["HDG"] = 0
-            i[1]["LWY"] = 0
             utmOld = [i[1]["Easting"], i[1]["Northing"]]
             tOld = i[0]
         else:
@@ -345,12 +344,9 @@ def addSpeedAndDirToGPS(GPS, Mag):
             #Direction = (GPSDirection + MagDirection) / 2
             #COW = COG-TIDE
 
-            Leeway = abs(GPSDirection - MagDirection)
-
             GPS[index][1]["COG"] = Wrapto0_360(degrees(GPSDirection))
             GPS[index][1]["SOG"] = Speed
             GPS[index][1]["HDG"] = Wrapto0_360(MagDirection + 180)
-            GPS[index][1]["LWY"] = Wrapto180(Leeway)
 
             utmOld = [i[1]["Easting"], i[1]["Northing"]]
             tOld = i[0]
@@ -381,6 +377,13 @@ def Wrapto180(x):
     return x
 
 
+def wraptopm180(x):
+    x = Wrapto0_360(x)
+    if x > 180:
+        x -= 360
+    return x
+
+
 def addApparentWind(GPSWindHead):
     import sys
     index = 0
@@ -402,7 +405,7 @@ def addApparentWind(GPSWindHead):
                 X, Y = to_vector(Wrapto0_360(i[1]['GWD']+180), i[1]['GWS']); X1, Y1 = to_vector(i[1]['TDD'], i[1]['TDS'])
                 temp, i[1]['TWS'] = from_vector(X + X1, Y + Y1)
                 i[1]['TWD'] = Wrapto0_360(temp - 180)
-                i[1]['TWA'] = Wrapto180(i[1]['HDG'] - i[1]['TWD'])
+                i[1]['TWA'] = wraptopm180(i[1]['HDG'] - i[1]['TWD'])
                 i[1]['LWY'] = Wrapto180(i[1]['HDG'] - i[1]['COW'])
                 X, Y = to_vector(Wrapto0_360(i[1]['TWD']+180), i[1]['TWS']); X1, Y1 = to_vector(i[1]['COW'], i[1]['BSP'])
                 temp, i[1]['AWS'] = from_vector(X + X1, Y + Y1)
@@ -426,11 +429,13 @@ def to_vector(ang, stren):
     X = sin(radians(float(ang))) * float(stren)
     return X, Y
 
+
 def from_vector(X, Y):
     from math import sqrt, atan2, degrees
     stren = sqrt(X*X+Y*Y)
     ang = Wrapto0_360(degrees(atan2(X, Y)))
     return ang, stren
+
 
 def bisect(target, dataList):
     length = len(dataList)
@@ -468,6 +473,7 @@ def Add_Tide(data):
         i[1]['TDS'] = 1.5
         i[1]['TDD'] = 135
     return data
+
 
 def Add_Tide2(data, HT='10:00', R=4.2):
     import csv
@@ -522,9 +528,31 @@ def data_time_trim(data, tmin, tmax):
             data2.append(i)
     return data2
 
+
+def Manual_var_Adjust(data, keys, add, isit360=False, isit180=False):
+    if type(keys) is not list:
+        keys = [keys]
+    for key in keys:
+        if isit360:
+            for i in data:
+                i[0][key] = Wrapto0_360(i[0][key]+add)
+        if isit180:
+            for i in data:
+                i[0][key] = Wrapto180(i[0][key]+add)
+    return data
+
+
 if __name__ == "__main__":
-    data = PP_data_import()
-    Add_Tide2(data)
+    data = PP_data_import(reprocess=False)
+    from Plotting_ToolBox import linar_var_plot, GPS_plot
+    # good upwind segment here
+    data = data_time_trim(data, 1479042400, 1479043500)
+    linar_var_plot(data, ['GWD', 'COG', 'TWA', 'TWD'])
+    from polarPlotTools import plotPolars
+    plotPolars(data, bodge=30)
+    GPS_plot(data)
+    import matplotlib.pyplot
+    matplotlib.pyplot.show()
 
 
 

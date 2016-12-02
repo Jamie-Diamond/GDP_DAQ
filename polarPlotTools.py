@@ -20,30 +20,28 @@ def polarFilter(Data, angleRange):
     return polarPoints
 
 
-def plotPolars(Data, windSpeed=15, WindTol=15, anglerange=15, minspeed=5):
+def plotPolars(Data, windSpeed=15, WindTol=15, anglerange=15, minspeed=5, bodge=0):
     Data = polarFilter(Data, anglerange)
     import math
+    from Data_import import wraptopm180
     theta = []
-    theta2 = []
     r = []
     for i in Data:
         if i[1]["TWS"] is not None:
             var = abs(i[1]["TWS"] - windSpeed)
             if var < WindTol:
                 if i[1]["BSP"] > minspeed:
-                    theta.append(math.radians(i[1]["TWA"]))
-                    theta2.append(-math.radians(i[1]["TWA"]))
+                    theta.append(math.radians(wraptopm180(i[1]["TWA"]+bodge)))
                     r.append(i[1]["BSP"])
+    matplotlib.pyplot.figure(101)
     axis = matplotlib.pyplot.subplot(111, projection='polar')
     axis.set_theta_zero_location('N')
     axis.set_theta_direction(-1)
     axis.set_rlabel_position(math.pi/2)
     axis.set_rlim(0, 18)
     axis.plot(theta, r, '.b')
-    axis.plot(theta2, r, '.b')
     axis.grid(True)
-    axis.set_title("BSP vs TWA (TWS: " + str(windSpeed) + " ± " + str(WindTol) + '  HDG Filter: ± '+str(anglerange) + '  Min Speed =  '+str(minspeed) + ")", va='bottom')
-    matplotlib.pyplot.show()
+    axis.set_title("BSP vs TWA (TWS: " + str(windSpeed) + " ± " + str(WindTol) + '  HDG Filter: ± '+str(anglerange) + '  Min Speed =  '+str(minspeed) + ' Bodged by:' +str(bodge)+'º' + ')', va='bottom')
 
 def plotAngleAveragedPolar(Data, windSpeed=15, WindTol=15, anglerange=15, minspeed=5, averange=0.5):
     Data = polarFilter(Data, anglerange)
@@ -64,7 +62,6 @@ def plotAngleAveragedPolar(Data, windSpeed=15, WindTol=15, anglerange=15, minspe
                 if i[1]["BSP"] > minspeed:
                     roundedAngle = roundNo(Wrapto180(i[1]["TWA"]), averange*2)
                     angles[roundedAngle].append(i[1]["BSP"])
-
     for i in angles:
         if len(angles[i]) != 0:
             angles[i] = sum(angles[i]) / float(len(angles[i]))
@@ -72,10 +69,8 @@ def plotAngleAveragedPolar(Data, windSpeed=15, WindTol=15, anglerange=15, minspe
             r.append(angles[i])
         else:
             angles[i] = None
-
-
     print(angles)
-
+    matplotlib.pyplot.figure(102)
     axis = matplotlib.pyplot.subplot(111, projection='polar')
     axis.set_theta_zero_location('N')
     axis.set_theta_direction(-1)
@@ -85,7 +80,6 @@ def plotAngleAveragedPolar(Data, windSpeed=15, WindTol=15, anglerange=15, minspe
     axis.grid(True)
     axis.set_title("BSP vs TWA (TWS: " + str(windSpeed) + "±" + str(WindTol) + ', HDG Filter: ±' + str(
         anglerange) + ', Min Speed: ' + str(minspeed) + "" + ', Angle Mapping: ±' + str(averange) + ")", va='bottom')
-    matplotlib.pyplot.show()
 
 
 if __name__ == "__main__":

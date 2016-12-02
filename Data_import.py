@@ -315,7 +315,6 @@ def getWindData(GPS):
 
     return GPS
 
-#THIS IS A TEST CHANGE FOR GIT
 def addSpeedAndDirToGPS(GPS, Mag):
     from math import atan2
     from math import sqrt, degrees

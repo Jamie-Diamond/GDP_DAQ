@@ -346,7 +346,7 @@ def addSpeedAndDirToGPS(GPS, Mag):
 
             GPS[index][1]["COG"] = Wrapto0_360(degrees(GPSDirection))
             GPS[index][1]["SOG"] = Speed
-            GPS[index][1]["HDG"] = Wrapto0_360(MagDirection + 180)
+            GPS[index][1]["HDG"] = Wrapto0_360(MagDirection + 160)
 
             utmOld = [i[1]["Easting"], i[1]["Northing"]]
             tOld = i[0]
@@ -405,7 +405,7 @@ def addApparentWind(GPSWindHead):
                 X, Y = to_vector(Wrapto0_360(i[1]['GWD']+180), i[1]['GWS']); X1, Y1 = to_vector(i[1]['TDD'], i[1]['TDS'])
                 temp, i[1]['TWS'] = from_vector(X + X1, Y + Y1)
                 i[1]['TWD'] = Wrapto0_360(temp - 180)
-                i[1]['TWA'] = wraptopm180(i[1]['HDG'] - i[1]['TWD'])
+                i[1]['TWA'] = wraptopm180(i[1]['COW'] - i[1]['TWD'])
                 i[1]['LWY'] = Wrapto180(i[1]['HDG'] - i[1]['COW'])
                 X, Y = to_vector(Wrapto0_360(i[1]['TWD']+180), i[1]['TWS']); X1, Y1 = to_vector(i[1]['COW'], i[1]['BSP'])
                 temp, i[1]['AWS'] = from_vector(X + X1, Y + Y1)
@@ -546,10 +546,10 @@ if __name__ == "__main__":
     data = PP_data_import(reprocess=False)
     from Plotting_ToolBox import linar_var_plot, GPS_plot
     # good upwind segment here
-    data = data_time_trim(data, 1479042400, 1479043500)
-    linar_var_plot(data, ['GWD', 'COG', 'TWA', 'TWD'])
+    #data = data_time_trim(data, 1479042400, 1479043500)
+    linar_var_plot(data, ['TWS'])
     from polarPlotTools import plotPolars
-    plotPolars(data, bodge=30)
+    plotPolars(data,windSpeed=12.5, WindTol=3,anglerange=20, bodge=13)
     GPS_plot(data)
     import matplotlib.pyplot
     matplotlib.pyplot.show()

@@ -6,7 +6,7 @@ def viewer1():
 
     # Get data
 
-    data = PP_data_import()
+    data = PP_data_import(reprocess=True)
     #Find times
 
     fin = len(data)-1

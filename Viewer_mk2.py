@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 
 def viewer2():
     from Data_import import PP_data_import
-
     # Get data
     data = PP_data_import()
     twa, cow, cog, hdg, sog, bsp, E, N, T, A = data_prep(data)
@@ -17,14 +16,11 @@ def viewer2():
     while idx < fin-samples:
         idxS = idx
         idxF = idx+samples
-        T1 = data[idxS][0]
-        T2 = data[idxF][0]
         slimline_GPS_plot(N, E, N[idxS:idxF], E[idxS:idxF], A[idxS:idxF], thisfig, subfig=1)
         slimline_linar_var_plot([cog[idxS:idxF], cow[idxS:idxF], hdg[idxS:idxF]], T[idxS:idxF], ['COG', 'COW', 'HDG'], thisfig, subfig=2)
         slimline_linar_var_plot([sog[idxS:idxF], bsp[idxS:idxF]], T[idxS:idxF], ['SOG', 'BSP'], thisfig, subfig=3)
         polar(twa[idxS:idxF], bsp[idxS:idxF], thisfig)
-
-        plt.pause(0.000001)
+        plt.pause(0.00000001)
         idx += delta
 
 def data_prep(data):
@@ -60,7 +56,7 @@ def slimline_GPS_plot(n1, e1, N, E, A, thisfig,subfig=1):
     ax = thisfig.add_subplot(2, 2, subfig)
     ax.clear()
     ax.errorbar(E, N, xerr=A, yerr=A, ecolor='b', color='k', marker='o')
-    ax.scatter(E[-1], N[-1], marker='o', s=500)
+    ax.scatter(E[-1], N[-1], marker='D', color='r', s=500)
     ax.plot(e1, n1, '-')
     ax.grid(True)
     ax.axis('equal')
@@ -77,7 +73,8 @@ def polar(Wind, Speed, thisfig,subfig=4):
         theta.append(math.radians(i))
     axis.set_rlim(0, 18)
     axis.plot(theta, Speed, '.b')
-    axis.plot(theta[-1], Speed[-1], 'rx', markersize=20)
+    axis.plot(theta[-1], Speed[-1], 'rD', markersize=10)
     axis.grid(True)
 
-viewer2()
+if __name__ == "__main__":
+    viewer2()

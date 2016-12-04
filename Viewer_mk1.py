@@ -1,14 +1,8 @@
 
 def viewer1():
     from Data_import import PP_data_import, data_time_trim
-    from Plotting_ToolBox import GPS_plot, linar_var_plot
-    import matplotlib.pyplot
-
     # Get data
-
     data = PP_data_import(reprocess=True)
-    #Find times
-
     fin = len(data)-1
     freq = 10/(data[100][0] - data[90][0])
     idx = 500
@@ -32,7 +26,7 @@ def viewer1():
         slim_data_retrive(data, idxS, idxF, bsp, bspt, 'BSP')
         slimline_linar_var_plot([cog, cow, hdg], [cogt, cowt, hdgt], ['COG', 'COW', 'HDG'], pause=0.0000001)
         slimline_linar_var_plot([sog, bsp], [sogt, bspt], ['SOG', 'BSP'], pause=0.0000001, fig=1)
-        idx += 4
+        idx += 1
 
 
 

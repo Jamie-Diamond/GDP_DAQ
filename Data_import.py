@@ -315,18 +315,25 @@ def getWindData(GPS):
 
     return GPS
 
-def addSpeedAndDirToGPS(GPS, Mag):
+def addSpeedAndDirToGPS(GPS, Mag, accel, gyro):
     from math import atan2
     from math import sqrt, degrees
+    from numpy import mean
     import sys
     index = 0
     utmOld = None
     utmNew = None
     for i in GPS:
-        if index == 0:
-            i[1]["SOG"] = 0
-            i[1]["COG"] = 0
-            i[1]["HDG"] = 0
+        if index == 0 or index == 1 or index == 2:
+            GPS[index][1]["COG"] = 0
+            GPS[index][1]["SOG"] = 0
+            GPS[index][1]["HDG"] = 0
+            GPS[index][1]["GYRX"] = 0
+            GPS[index][1]["GYRY"] = 0
+            GPS[index][1]["GYRZ"] = 0
+            GPS[index][1]["ACCX"] = 0
+            GPS[index][1]["ACCY"] = 0
+            GPS[index][1]["ACCZ"] = 0
             utmOld = [i[1]["Easting"], i[1]["Northing"]]
             tOld = i[0]
         else:
@@ -338,15 +345,44 @@ def addSpeedAndDirToGPS(GPS, Mag):
             Speed = (ds / dt) / 0.5144
 
             GPSDirection = atan2((utmNew[0] - utmOld[0]), (utmNew[1] - utmOld[1]))
-            nearestTimeStamp, iterations = bisect(i[0], Mag)
-            MagDirection = nearestTimeStamp[1]
+            #mag
+            idx, _ = bisect(i[0], Mag)
+            maglst = []
+            for val in Mag[idx-50:idx+50]:
+                maglst.append(val[1])
+            MagAve = mean(maglst)
+            # Gyro
+            idx, _ = bisect(i[0], gyro)
+            gyr_x, gyr_y, gyr_z = [], [], []
+            for val in gyro[idx - 100:idx + 100]:
+                gyr_x.append(val[1][0])
+                gyr_y.append(val[1][1])
+                gyr_z.append(val[1][2])
+            gyr_x = mean(gyr_x)
+            gyr_y = mean(gyr_y)
+            gyr_z = mean(gyr_z)
+            # accel
+            idx, _ = bisect(i[0], accel)
+            acc_x, acc_y, acc_z = [], [], []
+            for val in accel[idx - 50:idx + 50]:
+                acc_x.append(val[1][0])
+                acc_y.append(val[1][1])
+                acc_z.append(val[1][2])
+            acc_x = mean(acc_x)
+            acc_y = mean(acc_y)
+            acc_z = mean(acc_z)
 
-            #Direction = (GPSDirection + MagDirection) / 2
-            #COW = COG-TIDE
+ # mag 100 gyro 200 accel 100
 
             GPS[index][1]["COG"] = Wrapto0_360(degrees(GPSDirection))
             GPS[index][1]["SOG"] = Speed
-            GPS[index][1]["HDG"] = Wrapto0_360(MagDirection + 160)
+            GPS[index][1]["HDG"] = Wrapto0_360(MagAve + 160)
+            GPS[index][1]["GYRX"] = gyr_x
+            GPS[index][1]["GYRY"] = gyr_y
+            GPS[index][1]["GYRZ"] = gyr_z
+            GPS[index][1]["ACCX"] = acc_x
+            GPS[index][1]["ACCY"] = acc_y
+            GPS[index][1]["ACCZ"] = acc_z
 
             utmOld = [i[1]["Easting"], i[1]["Northing"]]
             tOld = i[0]
@@ -411,7 +447,7 @@ def addApparentWind(GPSWindHead):
                 temp, i[1]['AWS'] = from_vector(X + X1, Y + Y1)
                 i[1]['AWA'] = Wrapto180(temp+180)
             except KeyError:
-                print('Something not found in: ' + str(i))
+                print('\nSomething not found in: ' + str(i)+'\n')
 
         sys.stdout.write("\rApparent Wind Speed and Direction: Processed GPS Point: {:,.0f} of {:,.0f}. "
                          .format(index + 1, len(GPSWindHead)))
@@ -452,10 +488,10 @@ def bisect(target, dataList):
         elif dataList[correctedIndex][0] < target:
             correctedIndex += correctionFactor
         elif dataList[correctedIndex][0] == target:
-            return dataList[correctedIndex], iterations
+            return correctedIndex, iterations
     import warnings
-    warnings.warn('No match found in bisect method')
-    return dataList[correctedIndex], iterations
+    warnings.warn('\nNo match found in bisect method\n')
+    return correctedIndex, iterations
 
 
 def data_save(data, file='Data_Save'):
@@ -511,7 +547,7 @@ def PP_data_import(reprocess=False, file='Data_Save', input='log.txt'):
         print('No Processed Saved Data Found \nStarting from log.txt \n \n')
         Mag, Gyro, GPS, Accel, Lin_Accel = sensor_log_read(input)
         data = getWindData(GPS)
-        data = addSpeedAndDirToGPS(data, Mag)
+        data = addSpeedAndDirToGPS(data, Mag, Lin_Accel, Gyro)
         data = Add_Tide(data)
         data = addApparentWind(data)
         data_save(data)
@@ -543,7 +579,7 @@ def Manual_var_Adjust(data, keys, add, isit360=False, isit180=False):
 
 
 if __name__ == "__main__":
-    data = PP_data_import(reprocess=False)
+    data = PP_data_import(reprocess=True)
     from Plotting_ToolBox import linar_var_plot, GPS_plot
     # good upwind segment here
     #data = data_time_trim(data, 1479042400, 1479043500)

@@ -46,7 +46,8 @@ def plotPolars(Data, windSpeed=15, WindTol=15, anglerange=15, minspeed=5, bodge=
 def plotAngleAveragedPolar(Data, windSpeed=15, WindTol=15, anglerange=15, minspeed=5, averange=0.5):
     Data = polarFilter(Data, anglerange)
     import math
-    from numpy import arange
+    import heapq
+    from numpy import arange, mean
     from Data_import import roundNo, Wrapto180
 
     r = []
@@ -64,7 +65,7 @@ def plotAngleAveragedPolar(Data, windSpeed=15, WindTol=15, anglerange=15, minspe
                     angles[roundedAngle].append(i[1]["BSP"])
     for i in angles:
         if len(angles[i]) != 0:
-            angles[i] = sum(angles[i]) / float(len(angles[i]))
+            angles[i] = mean(heapq.nlargest(8, angles[i]))
             theta.append(math.radians(i))
             r.append(angles[i])
         else:
@@ -80,11 +81,10 @@ def plotAngleAveragedPolar(Data, windSpeed=15, WindTol=15, anglerange=15, minspe
     axis.grid(True)
     axis.set_title("BSP vs TWA (TWS: " + str(windSpeed) + "±" + str(WindTol) + ', HDG Filter: ±' + str(
         anglerange) + ', Min Speed: ' + str(minspeed) + "" + ', Angle Mapping: ±' + str(averange) + ")", va='bottom')
-
+    matplotlib.pyplot.show()
 
 if __name__ == "__main__":
     data = PP_data_import(reprocess=False)
-    plotAngleAveragedPolar(data, windSpeed=12, WindTol=1.5, anglerange=5, minspeed=6, averange=5)
-    linar_var_plot(data, ['GWD', 'TWD', 'COW', 'AWA'])
+    plotAngleAveragedPolar(data, windSpeed=12, WindTol=1.5, anglerange=40, minspeed=6, averange=0.5)
     #linar_var_plot(data, ['BSP', 'GWS', 'TWS', 'AWS'])
     print('Finito')

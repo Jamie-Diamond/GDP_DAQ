@@ -54,3 +54,7 @@ Garmin_TestSail_1.gpx
 __pycache__/boatHeadingTools.cpython-35.pyc
 __pycache__/sensor_log_ToolBox.cpython-35.pyc
 __pycache__/windDataTools.cpython-35.pyc
+polarPlotTools.py.orig
+polarPlotTools_BACKUP_40743.py
+polarPlotTools_BASE_40743.py
+polarPlotTools_LOCAL_40743.py

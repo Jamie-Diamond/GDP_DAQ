@@ -136,10 +136,16 @@ def movingaverage(interval, window_size):
 
 def linar_var_plot(Data, key=['SOG', 'COG'],GwindSpeed=15, Gerror=15, pause=False, fig=111):
     import matplotlib.pyplot as plt
+    string = "Plotted: "
+
     plt.figure(fig)
     plt.gcf().clear()
     if type(key) is not list:
         key = [key]
+
+    for i in key:
+        string += i + ", "
+
     for k in key:
         var = []
         time = []
@@ -151,9 +157,12 @@ def linar_var_plot(Data, key=['SOG', 'COG'],GwindSpeed=15, Gerror=15, pause=Fals
                     time.append(i[0])
         plt.plot(time, var, '.', label=k)
         plt.legend()
+
+    plt.show()
+
     if type(pause) is float:
         plt.pause(pause)
-
+    print(string)
 
 
 # to be moved to new file

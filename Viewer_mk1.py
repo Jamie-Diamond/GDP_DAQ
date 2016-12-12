@@ -7,6 +7,7 @@ def viewer1():
     # Get data
 
     data = PP_data_import()
+
     #Find times
 
     fin = len(data)-1
@@ -48,11 +49,15 @@ def viewer1():
 
 
 def slim_data_retrive(data, idx_s, idx_f, mag, time, key):
+    import time as t
+    import datetime
+
     idx = idx_s
     length = idx_f - idx_s
     while idx < idx_f:
         mag.append(data[idx][1][key])
-        time.append(data[idx][0])
+        #time.append(data[idx][0])
+        time.append(datetime.datetime.strptime(t.strftime('%H:%M:%S', t.localtime(data[idx][0])),'%H:%M:%S'))
         if len(mag) > length:
             mag.pop(0)
             time.pop(0)
@@ -61,15 +66,21 @@ def slim_data_retrive(data, idx_s, idx_f, mag, time, key):
 
 
 
-def slimline_linar_var_plot(mag, times, key, pause=False, fig=111, ):
+def slimline_linar_var_plot(mag, times, key, pause=False, fig=111, xlim=None):
     import matplotlib.pyplot as plt
+    import matplotlib
+
     plt.figure(fig)
     plt.gcf().clear()
     idx = 0
     for i in key:
         var = mag[idx]
-        time = times[idx]
-        plt.plot(time, var, '-', label=i)
+        #time = times[idx]
+        time = matplotlib.dates.date2num(times[idx])
+        plt.plot_date(time, var, 'o', label=i)
+        plt.gca().xaxis.set_major_formatter(matplotlib.dates.DateFormatter('%H:%M:%S'))
+        if xlim is not None:
+            plt.xlim(xlim)
         plt.legend()
         idx += 1
     if type(pause) is float:

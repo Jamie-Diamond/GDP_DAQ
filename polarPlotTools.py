@@ -84,7 +84,8 @@ def plotAngleAveragedPolar(Data, windSpeed=15, WindTol=15, anglerange=15, minspe
 
 if __name__ == "__main__":
     data = PP_data_import(reprocess=False)
-    plotAngleAveragedPolar(data, windSpeed=12, WindTol=1.5, anglerange=5, minspeed=6, averange=5)
-    linar_var_plot(data, ['GWD', 'TWD', 'COW', 'AWA'])
+    #plotAngleAveragedPolar(data, windSpeed=12, WindTol=1.5, anglerange=5, minspeed=6, averange=5)
+    #linar_var_plot(data, ['GWD', 'TWD', 'COW', 'AWA'])
     #linar_var_plot(data, ['BSP', 'GWS', 'TWS', 'AWS'])
+    linar_var_plot(data, ['COG', 'COW', 'HDG', 'LWY'])
     print('Finito')

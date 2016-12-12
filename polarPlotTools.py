@@ -118,4 +118,5 @@ if __name__ == "__main__":
     VPP_plot_from_excel()
     matplotlib.pyplot.show()
     #linar_var_plot(data, ['BSP', 'GWS', 'TWS', 'AWS'])
+    linar_var_plot(data, ['COG', 'COW', 'HDG', 'LWY'])
     print('Finito')

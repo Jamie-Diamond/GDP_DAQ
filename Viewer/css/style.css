@@ -1,0 +1,228 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url("../img/beige-paper.png");
+    /**overflow: hidden;**/
+    font-family: 'Roboto', sans-serif;
+}
+
+nav {
+    position: relative;
+    text-align: center;
+    font-size: 28px;
+    background-color: #00C0F2;
+    background-image: url("../img/pinstriped-suit.png");
+    text-shadow: 2px 2px #fff;
+    overflow: auto;
+}
+
+nav img {
+    max-height: 96px;
+}
+
+nav #gen-controls {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    margin: 10px;
+    height: calc(100% - 20px);
+    background: #00C0F2;
+    border: 1px solid #e6e6e6;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    font-size: 16px;
+}
+
+h1 {
+    font-family: 'Lobster', cursive;
+    color: #202020;
+    margin: 0px 0px 10px 0px;
+}
+
+select {
+    padding: 5px;
+    outline: none;
+    border: 1px solid #00C0F2;
+    margin: 5px;
+    min-width: 150px;
+}
+
+input[type="checkbox"] {
+    vertical-align: middle;
+}
+
+input[type="submit"] {
+    height: 80%;
+    width: 30%;
+    border: 1px solid #A1C22D;
+    background-color: #A1C22D;
+    color: white;
+}
+
+input[type="range"] {
+    width: 80%;
+}
+
+input[type="text"] {
+    width: 30%;
+}
+
+strike {
+    opacity: 0.3;
+}
+
+canvas {
+    height: calc(100% - 20px);
+    width: calc(100% - 20px);
+
+    display:none;
+}
+
+#viewer-grid{
+    display: flex;
+    justify-content: space-around;
+    align-content: space-around;
+    flex-wrap: wrap;
+    width: 100%;
+    /**height: calc(100% - 160px);**/
+}
+
+.viewer-section {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 30%;
+    height: calc((100% - 264px)/2);
+    min-height: 320px;
+    margin: 10px;
+    min-width: 410px;
+    background-color: #fff;
+    border: 1px solid #e6e6e6;
+    box-shadow: 5px 5px rgba(0,0,0,0.05);
+}
+
+.slider-section {
+    display: flex;
+    justify-content: space-around;
+    align-content: center;
+    align-items: center;
+    flex-direction: row;
+    height: 50px;
+    width: calc(100% - 2*(10%/6));
+    background-color: #fff;
+}
+
+.double {
+    width: calc(60% + 2*(10%/6));
+}
+
+.triple {
+    width: calc(90% + 4*(10%/6));
+}
+
+.control-group {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    margin: 5px;
+    border: 1px solid #e6e6e6;
+    background-color: #f6f6f6;
+    min-height: 20px;
+    line-height: 20px;
+    width: 400px;
+    padding: 5px;
+}
+
+.control-group .title {
+    flex-basis: 100%;
+    font-weight: bold;
+    text-align: center;
+    height: 20px;
+    line-height: 20px;
+}
+
+select.disabled {
+    background-color: #e6e6e6;
+    pointer-events: none;
+    color: #aaa;
+
+}
+
+#play-pause-btn {
+    box-sizing: border-box;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    border-radius: 3px;
+    background-color: #e2e2e2;
+}
+
+.play {
+    background-image: url('../img/play.png');
+    background-repeat: no-repeat;
+    background-size: 50% 50%;
+    background-position: 50% 50%;
+}
+
+.pause {
+    background-image: url('../img/pause.png');
+    background-repeat: no-repeat;
+    background-size: 50% 50%;
+    background-position: 50% 50%;
+}
+
+#grid-0-graph, #grid-1-graph, #grid-2-graph, #grid-3-graph, #grid-4-graph, #grid-5-graph {
+    max-width: 100%;
+    max-height: 100%;
+    flex-basis: 100%;
+}
+
+#grid-0-text, #grid-1-text, #grid-2-text, #grid-3-text, #grid-4-text, #grid-5-text {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;
+    align-content: flex-start;
+    align-items: center;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+.text-title {
+    font-size: 18px;
+    font-weight: bold;
+    flex-basis: 100%;
+    text-align: center;
+}
+
+.text-column-header, .text-data-cell {
+    flex-basis: 25%;
+    text-align: center;
+    line-height: 18px;
+    flex-grow: 0;
+}
+
+.text-data-row {
+    display: flex;
+    justify-content: space-around;
+    flex-basis: 100%;
+}
+
+.text-data {
+    border-top: 1px solid #f2f2f2;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;
+    align-content: flex-start;
+    width: 100%;
+    overflow-y: scroll;
+    max-height: calc(100% - 50px)
+}

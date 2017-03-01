@@ -1,0 +1,27 @@
+{
+    "data-set-name":
+    {
+        //Meta Data
+        "verbose name":"",              //The display name of the data
+        "group": "",                    //The group that the data should appear with e.g GPS or Speeds etc...
+        "default graph type": "",       //The default value for the graph type, options are: ["Line", "Scat", "Pol-Scat", "Text"]
+        "default x lim": "",            //The default type for the x limit, options are: ["Follow", "MinMax", "Set"]
+        "default y lim": "",            //The default type for the y limit, options are: ["Follow", "MinMax", "Set"]
+        "x limit values": [min,max],    //Only required if x limit is "Set", the minimum and maximum values for the x limit
+        "y limit values": [min,max],    //Only required if y limit is "Set", the minimum and maximum values for the y limit
+        
+        //Actual data
+        "data":                                 //The data provided as a list of lists.
+        [
+            [x-value, y-value, confidence],     //Each data point should have x and y values, the confidence is optional and will be implemented if I have time (in the style of varying size points).
+            [x-value, y-value, confidence],
+            [x-value, y-value, confidence],
+            [x-value, y-value, confidence],
+            [x-value, y-value, confidence],
+            [x-value, y-value, confidence],
+            [x-value, y-value, confidence],
+            [x-value, y-value, confidence],
+            [x-value, y-value, confidence],
+        ]
+    }
+}

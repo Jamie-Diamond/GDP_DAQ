@@ -1,0 +1,414 @@
+<html>
+    <head>
+        <title>The Volanti Project Viewer </title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF8">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <link href="https://fonts.googleapis.com/css?family=Lobster|Roboto" rel="stylesheet">
+        <script src="js/jquery.js"></script>
+        <script src="js/plotly-latest.js"></script>
+        <script src="js/main.js"></script>
+    </head>
+    <body>
+        <nav>
+            <img src="img/logo.png" />
+            <h1>The Volanti Viewer</h1>
+            <div id="gen-controls">
+                <div class="control-group">
+                    <div>
+                        Data
+                        <select id="data-select">
+                            <option>--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group" style="margin-top: 0px;">
+                    <div style="width: 30%">
+                        Trail Percent
+                    </div>
+                    <div style="width: 30%">
+                        Trail Points
+                    </div>
+                    <div style="width: 30%">
+                        Playback Speed
+                    </div>
+                    <div style="flex-basis: 100%; display: flex; justify-content: space-around;">
+                        <input type="text" name="trail-perc-value" placeholder="10" disabled />
+                        <input type="text" name="trail-point-value" placeholder="1000" disabled />
+                        <input type="text" name="playback-speed-multiplier" placeholder="5" />
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div id="viewer-grid">
+            <div id="0" class="viewer-section">
+                <div class="control-group">
+                    <div class="title">Graph</div>
+                    <select name="section_0_Graph">
+                        <option>None</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <div class="title">Graph Type:</div>
+                    <div>
+                        <input type="radio" name="section_0_Graph_Type" value="Line" checked/> Line
+                    </div>
+                    <div>
+                        <input type="radio" name="section_0_Graph_Type" value="Scat" /> Scatter
+                    </div>
+                    <div>
+                        <input type="radio" name="section_0_Graph_Type" value="Pol-Scat" /> Polar Scatter
+                    </div>
+                    <div>
+                        <input type="radio" name="section_0_Graph_Type" value="Text" /> Text
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="title">X-Axis Limits</div>
+                    <div>
+                        <input type="radio" name="section_0_X_Lim_Type" value="Follow" /> Follow Trail
+                    </div>
+                    <div>
+                        <input type="radio" name="section_0_X_Lim_Type" value="MinMax" /> Min/Max
+                    </div>
+                    <div>
+                        <input type="radio" name="section_0_X_Lim_Type" value="Set" /> Set Values
+                    </div>
+                    <div>
+                        <input type="text" name="section_0_X_Axis_Min" style="width:75px; font-size: 12px;" placeholder="min" disabled/></br>
+                        <input type="text" name="section_0_X_Axis_Max" style="width:75px; font-size: 12px;" placeholder="max" disabled/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="title">Y-Axis Limits</div>
+                    <div>
+                        <input type="radio" name="section_0_Y_Lim_Type" value="Follow" /> Follow Trail
+                    </div>
+                    <div>
+                        <input type="radio" name="section_0_Y_Lim_Type" value="MinMax" /> Min/Max
+                    </div>
+                    <div>
+                        <input type="radio" name="section_0_Y_Lim_Type" value="Set" /> Set Values
+                    </div>
+                    <div>
+                        <input type="text" name="section_0_Y_Axis_Min" style="width:75px; font-size: 12px;" placeholder="min" disabled/></br>
+                        <input type="text" name="section_0_Y_Axis_Max" style="width:75px; font-size: 12px;" placeholder="max" disabled/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div>
+                        <input type="checkbox" name="section_0_Expand" value="Expand Previous" disabled/><strike> Expand Previous </strike>
+                    </div>
+                </div>
+            </div>
+
+            <div id="1" class="viewer-section">
+                <div class="control-group">
+                    <div class="title">Graph</div>
+                    <select name="section_1_Graph">
+                        <option>None</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <div class="title">Graph Type:</div>
+                    <div>
+                        <input type="radio" name="section_1_Graph_Type" value="Line" checked/> Line
+                    </div>
+                    <div>
+                        <input type="radio" name="section_1_Graph_Type" value="Scat" /> Scatter
+                    </div>
+                    <div>
+                        <input type="radio" name="section_1_Graph_Type" value="Pol-Scat" /> Polar Scatter
+                    </div>
+                    <div>
+                        <input type="radio" name="section_1_Graph_Type" value="Text" /> Text
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="title">X-Axis Limits</div>
+                    <div>
+                        <input type="radio" name="section_1_X_Lim_Type" value="Follow" /> Follow Trail
+                    </div>
+                    <div>
+                        <input type="radio" name="section_1_X_Lim_Type" value="MinMax" /> Min/Max
+                    </div>
+                    <div>
+                        <input type="radio" name="section_1_X_Lim_Type" value="Set" /> Set Values
+                    </div>
+                    <div>
+                        <input type="text" name="section_1_X-Axis-Min" style="width:75px; font-size: 12px;" placeholder="min" disabled/></br>
+                        <input type="text" name="section_1_X-Axis-Max" style="width:75px; font-size: 12px;" placeholder="max" disabled/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="title">Y-Axis Limits</div>
+                    <div>
+                        <input type="radio" name="section_1_Y_Lim_Type" value="Follow" /> Follow Trail
+                    </div>
+                    <div>
+                        <input type="radio" name="section_1_Y_Lim_Type" value="MinMax" /> Min/Max
+                    </div>
+                    <div>
+                        <input type="radio" name="section_1_Y_Lim_Type" value="Set" /> Set Values
+                    </div>
+                    <div>
+                        <input type="text" name="section_1_Y-Axis-Min" style="width:75px; font-size: 12px;" placeholder="min" disabled/></br>
+                        <input type="text" name="section_1_Y-Axis-Max" style="width:75px; font-size: 12px;" placeholder="max" disabled/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div>
+                        <input type="checkbox" name="section_1_Expand" value="Expand Previous"/>Expand Previous
+                    </div>
+                </div>
+            </div>
+
+            <div id="2" class="viewer-section">
+                <div class="control-group">
+                    <div class="title">Graph</div>
+                    <select name="section_2_Graph">
+                        <option>None</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <div class="title">Graph Type:</div>
+                    <div>
+                        <input type="radio" name="section_2_Graph_Type" value="Line" checked/> Line
+                    </div>
+                    <div>
+                        <input type="radio" name="section_2_Graph_Type" value="Scat" /> Scatter
+                    </div>
+                    <div>
+                        <input type="radio" name="section_2_Graph_Type" value="Pol-Scat" /> Polar Scatter
+                    </div>
+                    <div>
+                        <input type="radio" name="section_2_Graph_Type" value="Text" /> Text
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="title">X-Axis Limits</div>
+                    <div>
+                        <input type="radio" name="section_2_X_Lim_Type" value="Follow" /> Follow Trail
+                    </div>
+                    <div>
+                        <input type="radio" name="section_2_X_Lim_Type" value="MinMax" /> Min/Max
+                    </div>
+                    <div>
+                        <input type="radio" name="section_2_X_Lim_Type" value="Set" /> Set Values
+                    </div>
+                    <div>
+                        <input type="text" name="section_2_X-Axis-Min" style="width:75px; font-size: 12px;" placeholder="min" disabled/></br>
+                        <input type="text" name="section_2_X-Axis-Max" style="width:75px; font-size: 12px;" placeholder="max" disabled/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="title">Y-Axis Limits</div>
+                    <div>
+                        <input type="radio" name="section_2_Y_Lim_Type" value="Follow" /> Follow Trail
+                    </div>
+                    <div>
+                        <input type="radio" name="section_2_Y_Lim_Type" value="MinMax" /> Min/Max
+                    </div>
+                    <div>
+                        <input type="radio" name="section_2_Y_Lim_Type" value="Set" /> Set Values
+                    </div>
+                    <div>
+                        <input type="text" name="section_2_Y-Axis-Min" style="width:75px; font-size: 12px;" placeholder="min" disabled/></br>
+                        <input type="text" name="section_2_Y-Axis-Max" style="width:75px; font-size: 12px;" placeholder="max" disabled/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div>
+                        <input type="checkbox" name="section_2_Expand" value="Expand Previous"/> Expand Previous
+                    </div>
+                </div>
+            </div>
+
+            <div id="3" class="viewer-section">
+                <div class="control-group">
+                    <div class="title">Graph</div>
+                    <select name="section_3_Graph">
+                        <option>None</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <div class="title">Graph Type:</div>
+                    <div>
+                        <input type="radio" name="section_3_Graph_Type" value="Line" checked/> Line
+                    </div>
+                    <div>
+                        <input type="radio" name="section_3_Graph_Type" value="Scat" /> Scatter
+                    </div>
+                    <div>
+                        <input type="radio" name="section_3_Graph_Type" value="Pol-Scat" /> Polar Scatter
+                    </div>
+                    <div>
+                        <input type="radio" name="section_3_Graph_Type" value="Text" /> Text
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="title">X-Axis Limits</div>
+                    <div>
+                        <input type="radio" name="section_3_X_Lim_Type" value="Follow" /> Follow Trail
+                    </div>
+                    <div>
+                        <input type="radio" name="section_3_X_Lim_Type" value="MinMax" /> Min/Max
+                    </div>
+                    <div>
+                        <input type="radio" name="section_3_X_Lim_Type" value="Set" /> Set Values
+                    </div>
+                    <div>
+                        <input type="text" name="section_3_X-Axis-Min" style="width:75px; font-size: 12px;" placeholder="min" disabled/></br>
+                        <input type="text" name="section_3_X-Axis-Max" style="width:75px; font-size: 12px;" placeholder="max" disabled/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="title">Y-Axis Limits</div>
+                    <div>
+                        <input type="radio" name="section_3_Y_Lim_Type" value="Follow" /> Follow Trail
+                    </div>
+                    <div>
+                        <input type="radio" name="section_3_Y_Lim_Type" value="MinMax" /> Min/Max
+                    </div>
+                    <div>
+                        <input type="radio" name="section_3_Y_Lim_Type" value="Set" /> Set Values
+                    </div>
+                    <div>
+                        <input type="text" name="section_3_Y-Axis-Min" style="width:75px; font-size: 12px;" placeholder="min" disabled/></br>
+                        <input type="text" name="section_3_Y-Axis-Max" style="width:75px; font-size: 12px;" placeholder="max" disabled/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div>
+                        <input type="checkbox" name="section_3_Expand" value="Expand Previous" disabled/><strike> Expand Previous </strike>
+                    </div>
+                </div>
+            </div>
+
+            <div id="4" class="viewer-section">
+                <div class="control-group">
+                    <div class="title">Graph</div>
+                    <select name="section_4_Graph">
+                        <option>None</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <div class="title">Graph Type:</div>
+                    <div>
+                        <input type="radio" name="section_4_Graph_Type" value="Line" checked/> Line
+                    </div>
+                    <div>
+                        <input type="radio" name="section_4_Graph_Type" value="Scat" /> Scatter
+                    </div>
+                    <div>
+                        <input type="radio" name="section_4_Graph_Type" value="Pol-Scat" /> Polar Scatter
+                    </div>
+                    <div>
+                        <input type="radio" name="section_4_Graph_Type" value="Text" /> Text
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="title">X-Axis Limits</div>
+                    <div>
+                        <input type="radio" name="section_4_X_Lim_Type" value="Follow" /> Follow Trail
+                    </div>
+                    <div>
+                        <input type="radio" name="section_4_X_Lim_Type" value="MinMax" /> Min/Max
+                    </div>
+                    <div>
+                        <input type="radio" name="section_4_X_Lim_Type" value="Set" /> Set Values
+                    </div>
+                    <div>
+                        <input type="text" name="section_4_X-Axis-Min" style="width:75px; font-size: 12px;" placeholder="min" disabled/></br>
+                        <input type="text" name="section_4_X-Axis-Max" style="width:75px; font-size: 12px;" placeholder="max" disabled/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="title">Y-Axis Limits</div>
+                    <div>
+                        <input type="radio" name="section_4_Y_Lim_Type" value="Follow" /> Follow Trail
+                    </div>
+                    <div>
+                        <input type="radio" name="section_4_Y_Lim_Type" value="MinMax" /> Min/Max
+                    </div>
+                    <div>
+                        <input type="radio" name="section_4_Y_Lim_Type" value="Set" /> Set Values
+                    </div>
+                    <div>
+                        <input type="text" name="section_4_Y-Axis-Min" style="width:75px; font-size: 12px;" placeholder="min" disabled/></br>
+                        <input type="text" name="section_4_Y-Axis-Max" style="width:75px; font-size: 12px;" placeholder="max" disabled/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div>
+                        <input type="checkbox" name="section_4_Expand" value="Expand Previous" /> Expand Previous
+                    </div>
+                </div>
+            </div>
+
+            <div id="5" class="viewer-section">
+                <div class="control-group">
+                    <div class="title">Graph</div>
+                    <select name="section_5_Graph">
+                        <option>None</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <div class="title">Graph Type:</div>
+                    <div>
+                        <input type="radio" name="section_5_Graph_Type" value="Line" checked/> Line
+                    </div>
+                    <div>
+                        <input type="radio" name="section_5_Graph_Type" value="Scat" /> Scatter
+                    </div>
+                    <div>
+                        <input type="radio" name="section_5_Graph_Type" value="Pol-Scat" /> Polar Scatter
+                    </div>
+                    <div>
+                        <input type="radio" name="section_5_Graph_Type" value="Text" /> Text
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="title">X-Axis Limits</div>
+                    <div>
+                        <input type="radio" name="section_5_X_Lim_Type" value="Follow" /> Follow Trail
+                    </div>
+                    <div>
+                        <input type="radio" name="section_5_X_Lim_Type" value="MinMax" /> Min/Max
+                    </div>
+                    <div>
+                        <input type="radio" name="section_5_X_Lim_Type" value="Set" /> Set Values
+                    </div>
+                    <div>
+                        <input type="text" name="section_5_X-Axis-Min" style="width:75px; font-size: 12px;" placeholder="min" disabled/></br>
+                        <input type="text" name="section_5_X-Axis-Max" style="width:75px; font-size: 12px;" placeholder="max" disabled/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="title">Y-Axis Limits</div>
+                    <div>
+                        <input type="radio" name="section_5_Y_Lim_Type" value="Follow" /> Follow Trail
+                    </div>
+                    <div>
+                        <input type="radio" name="section_5_Y_Lim_Type" value="MinMax" /> Min/Max
+                    </div>
+                    <div>
+                        <input type="radio" name="section_5_Y_Lim_Type" value="Set" /> Set Values
+                    </div>
+                    <div>
+                        <input type="text" name="section_5_Y-Axis-Min" style="width:75px; font-size: 12px;" placeholder="min" disabled/></br>
+                        <input type="text" name="section_5_Y-Axis-Max" style="width:75px; font-size: 12px;" placeholder="max" disabled/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div>
+                        <input type="checkbox" name="section_5_Expand" value="Expand Previous" /> Expand Previous
+                    </div>
+                </div>
+            </div>
+
+            <div class="slider-section">
+                <input type="submit" value="Go!" id="Go"/>
+            </div>
+        </div>
+    </body>
+</html>
